@@ -1,0 +1,504 @@
+
+/*
+==========================================
+ SPOTIFYNET - BUSCADOR
+ PASO 25.4
+
+ Corrección:
+ - Botón Crear en biblioteca contraída
+ - Botón para expandir siempre visible
+ - Iconos centrados
+ - Mantener buscador y pulido visual
+==========================================
+*/
+
+/* CARGAR EL PULIDO VISUAL GLOBAL */
+@import url("./pulido-spotify.css");
+
+/* ==========================================
+   BUSCADOR PRINCIPAL
+========================================== */
+
+.u-search {
+    position: relative;
+    z-index: 100;
+}
+
+.b-search-results {
+    position: absolute;
+
+    top: calc(100% + 10px);
+    left: 0;
+
+    width: min(460px, calc(100vw - 35px));
+    max-height: min(65vh, 560px);
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    padding: 10px;
+
+    border: 1px solid #343434;
+    border-radius: 12px;
+
+    background: #242424;
+    color: #fff;
+
+    box-shadow: 0 16px 45px rgba(0, 0, 0, .65);
+
+    scrollbar-width: thin;
+    scrollbar-color: #555 transparent;
+}
+
+.b-search-results[hidden] {
+    display: none !important;
+}
+
+.b-search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+.b-search-results::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 10px;
+}
+
+/* ==========================================
+   TÍTULOS DEL BUSCADOR
+========================================== */
+
+.b-search-title {
+    padding: 10px 11px 8px;
+
+    color: #fff;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.b-search-subtitle {
+    padding: 0 11px 10px;
+
+    color: #a7a7a7;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.b-search-divider {
+    height: 1px;
+    margin: 10px 7px;
+
+    background: #ffffff18;
+}
+
+/* ==========================================
+   RESULTADOS DEL BUSCADOR
+========================================== */
+
+.b-search-result {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    min-height: 62px;
+    padding: 8px 10px;
+
+    border-radius: 6px;
+    background: transparent;
+
+    color: white;
+    text-decoration: none;
+
+    transition: background .15s;
+}
+
+.b-search-result:hover,
+.b-search-result:focus-visible {
+    background: #3b3b3b;
+    outline: none;
+}
+
+.b-search-cover {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+
+    border-radius: 5px;
+    overflow: hidden;
+
+    display: grid;
+    place-items: center;
+
+    background: linear-gradient(
+        135deg,
+        #5b3186,
+        #172d44
+    );
+
+    color: white;
+    font-size: 23px;
+}
+
+.b-search-cover img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+    object-fit: cover;
+}
+
+.b-search-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+
+    flex: 1;
+    min-width: 0;
+}
+
+.b-search-info strong {
+    font-size: 13px;
+    font-weight: 700;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.b-search-info small {
+    color: #b3b3b3;
+    font-size: 11px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.b-search-type {
+    color: #aaa;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+/* ==========================================
+   ESTADOS DEL BUSCADOR
+========================================== */
+
+.b-search-message {
+    padding: 23px 14px;
+    text-align: center;
+
+    color: #b3b3b3;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.b-search-empty-icon {
+    display: block;
+    margin-bottom: 10px;
+
+    font-size: 29px;
+    color: #1ed760;
+}
+
+.b-search-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    padding: 21px;
+    color: #bbb;
+    font-size: 12px;
+}
+
+.b-search-spinner {
+    width: 17px;
+    height: 17px;
+
+    border: 2px solid #555;
+    border-top-color: #1ed760;
+    border-radius: 50%;
+
+    animation: b-search-spin .7s linear infinite;
+}
+
+@keyframes b-search-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================
+   PIE DEL BUSCADOR
+========================================== */
+
+.b-search-footer {
+    padding: 11px 13px 5px;
+
+    border-top: 1px solid #ffffff18;
+
+    color: #999;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* ==========================================
+   PASO 25.4
+   BIBLIOTECA CONTRAÍDA
+========================================== */
+
+/*
+   Cuando la biblioteca está contraída,
+   usuario.js añade is-library-collapsed
+   al elemento #userApp.
+*/
+
+body.user-page #userApp.is-library-collapsed .u-library {
+    overflow-x: hidden;
+}
+
+/* Colocar controles verticalmente */
+
+body.user-page #userApp.is-library-collapsed
+.u-library-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 10px;
+
+    width: 100%;
+    height: auto;
+    min-height: 0;
+
+    padding: 12px 4px;
+
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+/* Ocultar texto Tu biblioteca */
+
+body.user-page #userApp.is-library-collapsed
+.u-library-header .u-lib-label {
+    display: none !important;
+}
+
+/* Botón para volver a expandir */
+
+body.user-page #userApp.is-library-collapsed
+#toggleLibrary {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 34px;
+
+    width: 34px;
+    min-width: 34px;
+    max-width: 34px;
+    height: 34px;
+
+    padding: 0;
+    margin: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+    color: #b3b3b3;
+
+    font-size: 20px;
+    cursor: pointer;
+}
+
+body.user-page #userApp.is-library-collapsed
+#toggleLibrary:hover {
+    background: #282828;
+    color: white;
+}
+
+/* Botón Crear como círculo con + */
+
+body.user-page #userApp.is-library-collapsed
+#addSongButton {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 36px;
+
+    width: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+    height: 36px;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #282828;
+    color: white;
+
+    font-size: 23px;
+    line-height: 1;
+
+    box-sizing: border-box;
+    white-space: nowrap;
+
+    cursor: pointer;
+    overflow: hidden;
+}
+
+/* Ocultar solo la palabra Crear */
+
+body.user-page #userApp.is-library-collapsed
+#addSongButton::after {
+    content: none !important;
+    display: none !important;
+}
+
+body.user-page #userApp.is-library-collapsed
+#addSongButton:hover {
+    background: #383838;
+    transform: scale(1.05);
+}
+
+/* Ocultar filtros y textos al contraer */
+
+body.user-page #userApp.is-library-collapsed
+.u-library-filters,
+body.user-page #userApp.is-library-collapsed
+.u-lib-search-row {
+    display: none !important;
+}
+
+body.user-page #userApp.is-library-collapsed
+.u-lib-copy {
+    display: none !important;
+}
+
+/* Centrar cada portada de playlist */
+
+body.user-page #userApp.is-library-collapsed
+.u-library-items {
+    width: 100%;
+    padding: 0 3px;
+    box-sizing: border-box;
+}
+
+body.user-page #userApp.is-library-collapsed
+.u-lib-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-width: 0;
+
+    padding: 5px 0;
+    margin: 0;
+
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Mantener imágenes dentro del panel */
+
+body.user-page #userApp.is-library-collapsed
+.u-lib-art {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    max-width: 48px;
+    max-height: 48px;
+
+    margin: 0;
+    border-radius: 5px;
+
+    background-size: cover;
+    background-position: center;
+}
+
+/* ==========================================
+   BIBLIOTECA EXPANDIDA
+========================================== */
+
+/*
+   Se restauran sus controles automáticamente
+   al quitar is-library-collapsed.
+*/
+
+body.user-page #userApp:not(.is-library-collapsed)
+#addSongButton {
+    white-space: nowrap;
+}
+
+body.user-page #userApp:not(.is-library-collapsed)
+#addSongButton::after {
+    content: "Crear";
+    display: inline;
+}
+
+/* ==========================================
+   DISEÑO ADAPTABLE DEL BUSCADOR
+========================================== */
+
+@media (max-width: 760px) {
+    .b-search-results {
+        width: min(400px, calc(100vw - 80px));
+        max-height: 65vh;
+        left: 0;
+    }
+
+    .b-search-title {
+        font-size: 13px;
+    }
+
+    .b-search-cover {
+        width: 39px;
+        height: 39px;
+    }
+
+    .b-search-result {
+        min-height: 55px;
+        gap: 8px;
+        padding: 7px;
+    }
+
+    .b-search-info strong {
+        font-size: 12px;
+    }
+}
+
+/* ==========================================
+   ACCESIBILIDAD
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    body.user-page #addSongButton,
+    body.user-page #toggleLibrary {
+        transition: none;
+    }
+}
+
+/* Bloque H: búsqueda avanzada y resultados reproducibles. */
+.b-search-song { display:flex;align-items:stretch;min-width:0;border-radius:7px; }
+.b-search-song:hover, .b-search-song:focus-within {background:#383838}
+.b-search-song .b-search-play {border:0;background:transparent;text-align:left;cursor:pointer;flex:1;min-width:0;font:inherit;}
+.b-search-song .b-search-play:hover { background:transparent; }
+.b-search-play-icon {color:#1ed760;font-size:18px;flex-shrink:0}
+.b-search-open-playlist {align-self:center;display:grid;place-items:center;width:36px;height:36px;min-width:36px;border-radius:50%;color:#ddd;text-decoration:none;font-size:19px;}
+.b-search-open-playlist:hover {color:white;background:#505050;}
+.b-search-results .b-search-active {background:#454545!important;}
+.b-search-see-all {display:block;padding:13px;border-radius:7px;margin-top:6px;color:#1ed760;font-weight:700;font-size:12px;text-decoration:none;white-space:normal;}
+.b-search-see-all:hover,.b-search-see-all:focus-visible {background:#383838;color:#5bffa2;}
+.b-search-result:focus-visible,.b-search-open-playlist:focus-visible {outline:2px solid #1ed760;outline-offset:-2px;}
+@media(max-width:720px){.b-search-results {width:min(430px,calc(100vw - 28px));left:50%;transform:translateX(-50%);max-height:55vh}.b-search-type{display:none}}

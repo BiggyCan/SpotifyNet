@@ -1,0 +1,28 @@
+@model int
+@{
+    Layout = "_UserLayout";
+    ViewData["Title"] = $"Mix diario {Model}";
+}
+<section id="snMixPage" class="sn-j-mix-page" data-mix-index="@(Model - 1)">
+    <header class="sn-j-mix-hero">
+        <img src="/images/referencias/mix-@(Model).jpg" alt="Portada Mix diario @Model" class="sn-j-mix-cover" />
+        <div class="sn-j-mix-meta">
+            <span>PLAYLIST PERSONAL</span>
+            <h1>Mix diario @Model</h1>
+            <p id="snMixDescription">Una selección con las canciones que guardaste en SpotifyNet.</p>
+            <small id="snMixCount">Cargando canciones de tu cuenta…</small>
+        </div>
+    </header>
+    <div class="sn-j-mix-actions">
+        <button type="button" class="sn-j-primary" data-mix-action="play">▶ Reproducir mix</button>
+        <button type="button" class="sn-j-secondary" data-mix-action="queue">＋ Añadir a la cola</button>
+        <a href="/" class="sn-j-secondary">← Volver al Inicio</a>
+    </div>
+    <div class="sn-j-mix-body">
+        <div class="sn-j-mix-label"><h2>Canciones de este mix</h2><span id="snMixState" role="status" aria-live="polite"></span></div>
+        <div id="snMixSongs" class="sn-j-songs" aria-live="polite">
+            <p class="sn-j-mix-empty">Cargando tus canciones…</p>
+        </div>
+        <p class="sn-j-footnote">Las mezclas usan exclusivamente la música subida a tu cuenta. Puedes modificarlas añadiendo canciones a tus playlists.</p>
+    </div>
+</section>

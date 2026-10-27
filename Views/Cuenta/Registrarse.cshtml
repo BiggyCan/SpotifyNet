@@ -1,0 +1,341 @@
+@model SpotifyNet.Models.RegisterViewModel
+
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Registrarse";
+}
+
+<link rel="stylesheet" href="~/css/registro.css" asp-append-version="true" />
+
+<div class="reg-shell">
+    <a asp-controller="Home" asp-action="Index" class="auth-logo reg-logo"
+       aria-label="Inicio de SpotifyNet">♫</a>
+
+    <form asp-controller="Cuenta" asp-action="Registrarse" method="post"
+          id="registroForm" class="reg-form" novalidate>
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly" class="reg-summary"></div>
+
+        <!-- PANTALLA INICIAL: CORREO -->
+        <section class="reg-step" data-step="0" aria-labelledby="regTitle">
+            <h1 id="regTitle" class="reg-title">
+                Regístrate<br />para empezar<br />a escuchar<br />contenido
+            </h1>
+
+            <div class="reg-field">
+                <label asp-for="Email">Dirección de email</label>
+                <input asp-for="Email" type="email" class="reg-input"
+                       placeholder="nombre@dominio.com" autocomplete="email"
+                       maxlength="254" required />
+                <span asp-validation-for="Email" class="reg-error"></span>
+            </div>
+
+            <div id="regEmailError" class="reg-client-error" role="alert" hidden></div>
+            <button type="button" class="reg-green-btn" id="regNextEmail">Siguiente</button>
+
+            <div class="reg-or">o</div>
+            <div class="reg-social-list">
+                <button type="button" class="reg-social" disabled
+                        title="Pendiente de configuración de Google OAuth">
+                    <span class="reg-google">G</span> Registrarte con Google
+                </button>
+                <button type="button" class="reg-social" disabled
+                        title="Pendiente de configuración de Apple Sign In">
+                    <span class="reg-apple">●</span> Registrarte con Apple
+                </button>
+            </div>
+            <p class="reg-social-note">Google y Apple requieren integración de autenticación adicional.</p>
+
+            <div class="reg-login">
+                <span>¿Ya tienes una cuenta?</span>
+                <a asp-controller="Cuenta" asp-action="IniciarSesion">Iniciar sesión</a>
+            </div>
+        </section>
+
+        <!-- PASO 1: CONTRASEÑA -->
+        <section class="reg-step" data-step="1" hidden aria-labelledby="regPasswordTitle">
+            <div class="reg-progress"><span style="width:33.333%"></span></div>
+            <div class="reg-step-header">
+                <button type="button" class="reg-back" data-back="0" aria-label="Volver">‹</button>
+                <div>
+                    <p>Paso 1 de 3</p>
+                    <h2 id="regPasswordTitle">Crea una contraseña</h2>
+                </div>
+            </div>
+
+            <div class="reg-field">
+                <label asp-for="Password">Contraseña</label>
+                <div class="reg-password-wrap">
+                    <input asp-for="Password" type="password" class="reg-input"
+                           autocomplete="new-password" minlength="10" required />
+                    <button type="button" id="regRevealPassword" class="reg-reveal"
+                            aria-label="Mostrar contraseña" aria-pressed="false">◉</button>
+                </div>
+                <span asp-validation-for="Password" class="reg-error"></span>
+            </div>
+
+            <p class="reg-requirements-title">La contraseña debe tener al menos</p>
+            <ul class="reg-requirements">
+                <li id="regRuleLetter">1 letra minúscula</li>
+                <li id="regRuleSymbol">1 número</li>
+                <li id="regRuleLength">10 caracteres</li>
+            </ul>
+
+            <div id="regPasswordError" class="reg-client-error" role="alert" hidden></div>
+            <button type="button" class="reg-green-btn reg-step-next" id="regNextPassword">Siguiente</button>
+        </section>
+
+        <!-- PASO 2: DATOS PERSONALES -->
+        <section class="reg-step" data-step="2" hidden aria-labelledby="regProfileTitle">
+            <div class="reg-progress"><span style="width:66.666%"></span></div>
+            <div class="reg-step-header">
+                <button type="button" class="reg-back" data-back="1" aria-label="Volver">‹</button>
+                <div>
+                    <p>Paso 2 de 3</p>
+                    <h2 id="regProfileTitle">Cuéntanos sobre ti</h2>
+                </div>
+            </div>
+
+            <div class="reg-field">
+                <label asp-for="DisplayName">Nombre</label>
+                <p class="reg-hint">Este nombre aparecerá en tu perfil.</p>
+                <input asp-for="DisplayName" class="reg-input" type="text"
+                       maxlength="50" minlength="2" autocomplete="nickname" required />
+                <span asp-validation-for="DisplayName" class="reg-error"></span>
+            </div>
+
+            <fieldset class="reg-field reg-fieldset">
+                <legend>Fecha de nacimiento</legend>
+                <p class="reg-hint">La usamos solo para comprobar la edad de registro.</p>
+                <div class="reg-birth-row">
+                    <div>
+                        <label asp-for="BirthDay" class="reg-visually-hidden">Día</label>
+                        <input asp-for="BirthDay" type="number" class="reg-input" min="1" max="31"
+                               placeholder="dd" aria-label="Día" required />
+                    </div>
+                    <div>
+                        <label asp-for="BirthMonth" class="reg-visually-hidden">Mes</label>
+                        <select asp-for="BirthMonth" class="reg-input" aria-label="Mes" required>
+                            <option value="">Mes</option>
+                            <option value="1">Enero</option>
+                            <option value="2">Febrero</option>
+                            <option value="3">Marzo</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Mayo</option>
+                            <option value="6">Junio</option>
+                            <option value="7">Julio</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Noviembre</option>
+                            <option value="12">Diciembre</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label asp-for="BirthYear" class="reg-visually-hidden">Año</label>
+                        <input asp-for="BirthYear" type="number" class="reg-input" min="1900"
+                               max="9999" placeholder="aaaa" aria-label="Año" required />
+                    </div>
+                </div>
+                <span asp-validation-for="BirthDay" class="reg-error"></span>
+                <span asp-validation-for="BirthMonth" class="reg-error"></span>
+                <span asp-validation-for="BirthYear" class="reg-error"></span>
+            </fieldset>
+
+            <fieldset class="reg-fieldset reg-gender">
+                <legend>Género</legend>
+                <p class="reg-hint">Elige la opción con la que te identifiques.</p>
+                <div class="reg-gender-options">
+                    @foreach (var option in new[] { "Hombre", "Mujer", "No binario", "Otro", "Prefiero no aclararlo" })
+                    {
+                        <label class="reg-radio-option">
+                            <input type="radio" asp-for="Gender" value="@option" />
+                            @option
+                        </label>
+                    }
+                </div>
+                <span asp-validation-for="Gender" class="reg-error"></span>
+            </fieldset>
+
+            <div id="regProfileError" class="reg-client-error" role="alert" hidden></div>
+            <button type="button" class="reg-green-btn reg-step-next" id="regNextProfile">Siguiente</button>
+        </section>
+
+        <!-- PASO 3: PREFERENCIAS -->
+        <section class="reg-step" data-step="3" hidden aria-labelledby="regTermsTitle">
+            <div class="reg-progress"><span style="width:100%"></span></div>
+            <div class="reg-step-header">
+                <button type="button" class="reg-back" data-back="2" aria-label="Volver">‹</button>
+                <div>
+                    <p>Paso 3 de 3</p>
+                    <h2 id="regTermsTitle">Condiciones y preferencias</h2>
+                </div>
+            </div>
+
+            <div class="reg-check-card">
+                <label><input asp-for="ReceiveNews" type="checkbox" />
+                    Quiero recibir novedades de SpotifyNet.</label>
+            </div>
+            <div class="reg-check-card">
+                <label><input asp-for="ParticipateInTests" type="checkbox" />
+                    Quiero participar en pruebas de nuevas funciones.</label>
+            </div>
+
+            <p class="reg-terms-note">SpotifyNet es un proyecto académico de demostración.
+                Estas preferencias se guardan en tu cuenta, pero todavía no activan mensajes ni campañas.
+                Usa solamente música que tengas derecho a reproducir.</p>
+
+            <div class="reg-check-card reg-required-card">
+                <label>
+                    <input asp-for="AcceptConditions" type="checkbox" />
+                    Confirmo que quiero crear una cuenta en SpotifyNet y que entiendo
+                    que es una aplicación académica independiente de Spotify.
+                </label>
+            </div>
+            <span asp-validation-for="AcceptConditions" class="reg-error"></span>
+
+            <div id="regTermsError" class="reg-client-error" role="alert" hidden></div>
+            <button type="submit" id="regSubmit" class="reg-green-btn reg-step-next">
+                Registrarte
+            </button>
+        </section>
+    </form>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    "use strict";
+    const form = document.getElementById("registroForm");
+    const steps = Array.from(form.querySelectorAll(".reg-step"));
+    const $ = id => document.getElementById(id);
+    let active = 0;
+
+    function showStep(index) {
+        active = index;
+        steps.forEach((step, i) => { step.hidden = i !== index; });
+        window.scrollTo({ top: 0, behavior: "instant" });
+        const focus = steps[index].querySelector("input:not([type=hidden]),select");
+        focus?.focus({ preventScroll: true });
+    }
+
+    function errorFor(id, message) {
+        const area = $(id);
+        area.textContent = message || "";
+        area.hidden = !message;
+    }
+
+    function checkEmail() {
+        const email = $("Email");
+        if (!email.value.trim() || !email.checkValidity()) {
+            errorFor("regEmailError", "Ingresa un correo electrónico válido.");
+            email.focus();
+            return false;
+        }
+        errorFor("regEmailError", "");
+        return true;
+    }
+
+    function updatePasswordRules() {
+        const pass = $("Password").value;
+        const checks = [
+            ["regRuleLetter", /[a-z]/.test(pass)],
+            ["regRuleSymbol", /[0-9]/.test(pass)],
+            ["regRuleLength", pass.length >= 10]
+        ];
+        checks.forEach(([id, ok]) => {
+            $(id).classList.toggle("is-valid", ok);
+        });
+        return checks.every(x => x[1]);
+    }
+
+    function checkPassword() {
+        if (!updatePasswordRules()) {
+            errorFor("regPasswordError", "Completa los tres requisitos de contraseña.");
+            $("Password").focus();
+            return false;
+        }
+        errorFor("regPasswordError", "");
+        return true;
+    }
+
+    function checkProfile() {
+        const name = $("DisplayName").value.trim();
+        const day = Number($("BirthDay").value);
+        const month = Number($("BirthMonth").value);
+        const year = Number($("BirthYear").value);
+        const gender = form.querySelector('input[name="Gender"]:checked');
+        const date = new Date(year, month - 1, day);
+        const limit = new Date();
+        limit.setFullYear(limit.getFullYear() - 13);
+        const validDate = year >= 1900 && year <= 9999 && month >= 1 && month <= 12 &&
+            day >= 1 && date.getFullYear() === year &&
+            date.getMonth() === month - 1 && date.getDate() === day && date <= limit;
+
+        if (name.length < 2 || name.length > 50) {
+            errorFor("regProfileError", "Escribe un nombre de entre 2 y 50 caracteres.");
+            $("DisplayName").focus();
+            return false;
+        }
+        if (!validDate) {
+            errorFor("regProfileError", "Escribe una fecha válida. Debes tener al menos 13 años.");
+            $("BirthDay").focus();
+            return false;
+        }
+        if (!gender) {
+            errorFor("regProfileError", "Selecciona una opción de género.");
+            return false;
+        }
+        errorFor("regProfileError", "");
+        return true;
+    }
+
+    $("regNextEmail").addEventListener("click", () => {
+        if (checkEmail()) showStep(1);
+    });
+    $("regNextPassword").addEventListener("click", () => {
+        if (checkPassword()) showStep(2);
+    });
+    $("regNextProfile").addEventListener("click", () => {
+        if (checkProfile()) showStep(3);
+    });
+
+    form.querySelectorAll("[data-back]").forEach(btn => {
+        btn.addEventListener("click", () => showStep(Number(btn.dataset.back)));
+    });
+
+    $("Password").addEventListener("input", () => {
+        updatePasswordRules();
+        errorFor("regPasswordError", "");
+    });
+
+    $("regRevealPassword").addEventListener("click", function () {
+        const password = $("Password");
+        const showing = password.type === "password";
+        password.type = showing ? "text" : "password";
+        this.setAttribute("aria-pressed", showing ? "true" : "false");
+        this.setAttribute("aria-label", showing ? "Ocultar contraseña" : "Mostrar contraseña");
+    });
+
+    form.addEventListener("submit", function (event) {
+        if (!checkEmail()) { event.preventDefault(); showStep(0); return; }
+        if (!checkPassword()) { event.preventDefault(); showStep(1); return; }
+        if (!checkProfile()) { event.preventDefault(); showStep(2); return; }
+        if (!$("AcceptConditions").checked) {
+            event.preventDefault();
+            errorFor("regTermsError", "Debes confirmar las condiciones de la cuenta.");
+            showStep(3);
+            return;
+        }
+        $("regSubmit").disabled = true;
+        $("regSubmit").textContent = "Creando cuenta...";
+    });
+
+    updatePasswordRules();
+    // El servidor valida nuevamente todos los campos. Si devuelve
+    // errores de registro, empezamos por la pantalla de correo.
+    showStep(0);
+})();
+</script>
+}

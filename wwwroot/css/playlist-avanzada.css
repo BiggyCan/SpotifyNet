@@ -1,0 +1,24 @@
+/* SpotifyNet - Bloque B: edición avanzada de playlists */
+body.user-page .pb-tools{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin:15px 0 12px}
+body.user-page .pb-search-wrap{display:flex;align-items:center;gap:8px;min-width:180px;flex:1;background:#262626;border-radius:6px;padding:0 11px;color:#b7b7b7;border:1px solid #414141}
+body.user-page .pb-search-wrap:focus-within{border-color:#ddd}
+body.user-page .pb-search-wrap input{min-width:0;flex:1;max-width:380px;background:none;border:0;outline:0;color:white;height:39px;font-size:12px}
+body.user-page .pb-order-wrap{display:flex;align-items:center;gap:8px;color:#b7b7b7;font-size:12px}
+body.user-page .pb-order-wrap select{max-width:235px;background:#292929;color:white;border:1px solid #454545;border-radius:6px;padding:10px;cursor:pointer;font:inherit}
+body.user-page .pb-order-hint{font-size:11px;color:#aaa;margin:3px 0 13px}
+body.user-page .pb-move{background:transparent;border:0;color:#b3b3b3;cursor:pointer;font-size:15px;padding:2px 3px}
+body.user-page .pb-move:hover{color:white}
+body.user-page .pb-move:disabled{opacity:.25;cursor:default}
+body.user-page .pb-sortable{cursor:grab}
+body.user-page .pb-dragging{opacity:.45}
+body.user-page .pb-dialog{width:min(440px,calc(100vw - 30px));max-height:80vh;overflow:auto;padding:24px;background:#242424;border:1px solid #555;border-radius:10px;color:white;box-shadow:0 20px 60px #000b}
+body.user-page .pb-dialog::backdrop{background:#000a}
+body.user-page .pb-dialog h2{font-size:21px;margin:0 0 20px}
+body.user-page .pb-dialog label{display:block;font-weight:700;font-size:13px;margin:15px 0 7px}
+body.user-page .pb-dialog input,body.user-page .pb-dialog textarea{width:100%;box-sizing:border-box;padding:11px;color:#fff;background:#141414;border:1px solid #555;border-radius:5px;font:inherit;resize:vertical}
+body.user-page .pb-dialog input:focus,body.user-page .pb-dialog textarea:focus{outline:2px solid white;outline-offset:1px}
+body.user-page .pb-dialog-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+body.user-page .pb-dialog button{padding:10px 16px;border-radius:99px;border:1px solid #666;color:white;background:transparent;cursor:pointer;font-weight:bold}
+body.user-page .pb-dialog .pb-save{background:#1ed760;border:0;color:#000}
+body.user-page .p24-actions-cell{gap:3px}
+@media(max-width:800px){body.user-page .p24-actions-cell{gap:0}body.user-page .pb-order-wrap{width:100%;justify-content:space-between}body.user-page .pb-move{font-size:12px}}

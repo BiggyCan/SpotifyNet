@@ -1,0 +1,17 @@
+# Compilar exclusivamente el codigo, nunca archivos personales
+**/bin/
+**/obj/
+.git/
+.vs/
+.vscode/
+App_Data/
+*.db
+*.db-*
+*.db-shm
+*.db-wal
+*.zip
+*.rar
+*.log
+.env
+.env.*
+!*.env.example

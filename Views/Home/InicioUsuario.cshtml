@@ -1,0 +1,261 @@
+
+@{
+    Layout = "_UserLayout";
+    ViewData["Title"] = "Tu música";
+
+    string nombre = User.Identity?.Name?.Split('@')[0]
+        ?? "Usuario";
+}
+
+<div class="u-home-content">
+
+    <!-- FILTROS SUPERIORES -->
+    <div class="u-category-tabs">
+        <button type="button"
+                class="u-category active"
+                data-section-filter="todo">
+            Todo
+        </button>
+
+        <button type="button"
+                class="u-category"
+                data-section-filter="musica">
+            Música
+        </button>
+
+        <button type="button"
+                class="u-category"
+                data-section-filter="podcasts">
+            Podcasts
+        </button>
+
+        <button type="button"
+                class="u-category"
+                data-section-filter="audiolibros">
+            Audiolibros
+        </button>
+    </div>
+
+    <!-- PORTADA MUSICAL -->
+    <div id="musicSections">
+
+        <div class="u-quick-grid">
+
+            <button class="u-quick-item" data-add-files>
+                <span class="u-quick-cover liked-art">♥</span>
+                <strong>Tus me gusta</strong>
+            </button>
+
+            <button class="u-quick-item" data-add-files>
+                <span class="u-quick-cover art-neon">♫</span>
+                <strong>Mi playlist</strong>
+            </button>
+
+            <button class="u-quick-item" data-add-files>
+                <span class="u-quick-cover art-orange">☀</span>
+                <strong>Para programar</strong>
+            </button>
+
+            <button class="u-quick-item" data-add-files>
+                <span class="u-quick-cover art-blue">♪</span>
+                <strong>Fiesta</strong>
+            </button>
+
+            <button class="u-quick-item" data-add-files>
+                <span class="u-quick-cover art-purple">◈</span>
+                <strong>Sonidos nocturnos</strong>
+            </button>
+
+            <button class="u-quick-item" data-add-files>
+                <span class="u-quick-cover art-pink">★</span>
+                <strong>Hits favoritos</strong>
+            </button>
+
+            <button class="u-quick-item" data-add-files>
+                <span class="u-quick-cover art-red">♬</span>
+                <strong>Rock y más</strong>
+            </button>
+
+            <button class="u-quick-item" data-add-files>
+                <span class="u-quick-cover art-green">▶</span>
+                <strong>Mi colección</strong>
+            </button>
+
+        </div>
+
+        <!-- TUS PLAYLISTS -->
+        <section class="u-music-section">
+
+            <div class="u-section-head">
+                <h2>Tus playlists</h2>
+                <span>Tu colección</span>
+            </div>
+
+            <div class="u-music-grid">
+
+                <button class="u-music-card" data-add-files>
+                    <div class="u-album-art art-neon">
+                        <span class="u-art-icon">♫</span>
+                        <span class="u-art-text">MI MIX</span>
+                    </div>
+                    <strong>Mi playlist</strong>
+                    <small>De @nombre</small>
+                </button>
+
+                <button class="u-music-card" data-add-files>
+                    <div class="u-album-art art-orange">
+                        <span class="u-art-icon">⌘</span>
+                        <span class="u-art-text">CODE</span>
+                    </div>
+                    <strong>Para programar</strong>
+                    <small>De @nombre</small>
+                </button>
+
+                <button class="u-music-card" data-add-files>
+                    <div class="u-album-art art-blue">
+                        <span class="u-art-icon">★</span>
+                        <span class="u-art-text">FIESTA</span>
+                    </div>
+                    <strong>Fiesta</strong>
+                    <small>De @nombre</small>
+                </button>
+
+                <button class="u-music-card" data-add-files>
+                    <div class="u-album-art art-purple">
+                        <span class="u-art-icon">☾</span>
+                        <span class="u-art-text">NIGHT</span>
+                    </div>
+                    <strong>Sonidos nocturnos</strong>
+                    <small>De @nombre</small>
+                </button>
+
+                <button class="u-music-card" data-add-files>
+                    <div class="u-album-art art-red">
+                        <span class="u-art-icon">♬</span>
+                        <span class="u-art-text">ROCK</span>
+                    </div>
+                    <strong>Rock y más</strong>
+                    <small>De @nombre</small>
+                </button>
+
+                <button class="u-music-card" data-add-files>
+                    <div class="u-album-art art-pink">
+                        <span class="u-art-icon">♥</span>
+                        <span class="u-art-text">HITS</span>
+                    </div>
+                    <strong>Hits favoritos</strong>
+                    <small>De @nombre</small>
+                </button>
+
+            </div>
+        </section>
+
+        <!-- MIXES REALES DE LA CUENTA: nunca abren el selector de MP3 -->
+        <section class="u-music-section">
+            <div class="u-section-head">
+                <h2>Hecho para @nombre</h2>
+                <a class="sn-mix-all-link" href="/Mixes/Detalle?numero=1">Escuchar mis mixes</a>
+            </div>
+            <div class="u-music-grid">
+                <a class="u-music-card sn-i-mix-card" href="/Mixes/Detalle?numero=1" data-mix-real="0">
+                    <div class="u-album-art mix-one">
+                        <span class="u-mix-number">01</span>
+                        <span class="u-mix-title">Mix diario</span>
+                    </div>
+                    <strong>Mix diario 1</strong>
+                    <small>Tu música guardada</small>
+                </a>
+                <a class="u-music-card sn-i-mix-card" href="/Mixes/Detalle?numero=2" data-mix-real="1">
+                    <div class="u-album-art mix-two">
+                        <span class="u-mix-number">02</span>
+                        <span class="u-mix-title">Mix diario</span>
+                    </div>
+                    <strong>Mix diario 2</strong>
+                    <small>Tu música guardada</small>
+                </a>
+                <a class="u-music-card sn-i-mix-card" href="/Mixes/Detalle?numero=3" data-mix-real="2">
+                    <div class="u-album-art mix-three">
+                        <span class="u-mix-number">03</span>
+                        <span class="u-mix-title">Mix diario</span>
+                    </div>
+                    <strong>Mix diario 3</strong>
+                    <small>Tu música guardada</small>
+                </a>
+                <a class="u-music-card sn-i-mix-card" href="/Mixes/Detalle?numero=4" data-mix-real="3">
+                    <div class="u-album-art mix-four">
+                        <span class="u-mix-number">04</span>
+                        <span class="u-mix-title">Mix diario</span>
+                    </div>
+                    <strong>Mix diario 4</strong>
+                    <small>Tu música guardada</small>
+                </a>
+                <a class="u-music-card sn-i-mix-card" href="/Mixes/Detalle?numero=5" data-mix-real="4">
+                    <div class="u-album-art mix-five">
+                        <span class="u-mix-number">05</span>
+                        <span class="u-mix-title">Mix diario</span>
+                    </div>
+                    <strong>Mix diario 5</strong>
+                    <small>Tu música guardada</small>
+                </a>
+                <a class="u-music-card sn-i-mix-card" href="/Mixes/Detalle?numero=6" data-mix-real="5">
+                    <div class="u-album-art mix-six">
+                        <span class="u-mix-number">06</span>
+                        <span class="u-mix-title">Mix diario</span>
+                    </div>
+                    <strong>Mix diario 6</strong>
+                    <small>Tu música guardada</small>
+                </a>
+            </div>
+        </section>
+
+        <!-- MUSICA REAL DE PRUEBA -->
+        <section class="u-music-section" id="localMusicSection">
+
+            <div class="u-section-head">
+                <h2>Tu música local</h2>
+                <button class="u-section-action"
+                        type="button"
+                        data-add-files>
+                    + Añadir canciones
+                </button>
+            </div>
+
+            <p class="u-help-text">
+                Puedes seleccionar archivos MP3, WAV u otros
+                audios compatibles de tu equipo para probar
+                el reproductor.
+            </p>
+
+            <div id="uploadedSongs" class="u-uploaded-list">
+                <div class="u-empty-library" id="emptyLibrary">
+                    <span>♫</span>
+                    <strong>Todavía no has añadido canciones</strong>
+                    <p>Utiliza el botón Añadir canciones.</p>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- PODCASTS -->
+    <div id="podcastsSection" class="u-empty-category" hidden>
+        <span>🎙</span>
+        <h2>Explorar podcasts</h2>
+        <p>
+            Aquí aparecerá tu colección de podcasts
+            cuando implementemos esta sección.
+        </p>
+    </div>
+
+    <!-- AUDIOLIBROS -->
+    <div id="audiobooksSection" class="u-empty-category" hidden>
+        <span>📖</span>
+        <h2>Explorar audiolibros</h2>
+        <p>
+            Aquí podrás consultar tus audiolibros
+            cuando incorporemos esta funcionalidad.
+        </p>
+    </div>
+
+</div>

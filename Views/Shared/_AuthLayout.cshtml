@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SpotifyNet</title>
+    <link rel="stylesheet"
+          href="~/css/auth.css"
+          asp-append-version="true" />
+</head>
+<body class="auth-layout">
+
+    <main class="auth-main">
+        @RenderBody()
+    </main>
+
+    <footer class="auth-footer">
+        SpotifyNet · Proyecto académico en ASP.NET Core
+    </footer>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

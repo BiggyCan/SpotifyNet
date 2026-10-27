@@ -1,0 +1,29 @@
+# Archivos compilados y de herramientas
+**/bin/
+**/obj/
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Base de datos real, incluidos los respaldos
+*.db
+*.db-shm
+*.db-wal
+*.db-*
+
+# Biblioteca y audios privados de los usuarios
+/App_Data/
+
+# Credenciales / configuracion local
+.env
+.env.*
+!*.env.example
+**/secrets.json
+
+# Otros
+*.zip
+*.rar
+*.log
+.DS_Store
+Thumbs.db

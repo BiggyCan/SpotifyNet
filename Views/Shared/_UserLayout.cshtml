@@ -1,0 +1,544 @@
+@{
+    string correo = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value
+        ?? User.Identity?.Name ?? "Usuario";
+    string nombre = User.FindFirst("SpotifyNet.DisplayName")?.Value
+        ?? correo.Split('@')[0];
+    string avatar = User.FindFirst("SpotifyNet.Avatar")?.Value ?? "";
+    string usuarioId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "";
+    string inicial = nombre.Length > 0
+        ? nombre.Substring(0, 1).ToUpperInvariant()
+        : "U";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - SpotifyNet</title>
+
+    <link rel="stylesheet"
+          href="~/css/usuario.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/fidelidad.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/buscador.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/css/catalogo.css" asp-append-version="true" />
+    <link rel="stylesheet"
+          href="~/css/cola.css"
+          asp-append-version="true" />
+    <link rel="stylesheet"
+          href="~/css/social.css"
+          asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/bloque-e.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/responsive.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/inicio-real.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/favoritos.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/explorar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/mixes-reales.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/bloque-j.css" asp-append-version="true" />
+</head>
+
+<body class="user-page">
+
+<div class="u-app" id="userApp">
+
+    <!-- BARRA SUPERIOR -->
+    <header class="u-header">
+
+        <a href="/"
+           class="u-logo"
+           title="SpotifyNet">
+            ♫
+        </a>
+
+        <div class="u-header-center">
+
+            <a href="/"
+               class="u-home-button"
+               title="Inicio">
+                ⌂
+            </a>
+
+            <!-- BUSCADOR -->
+            <div class="u-search">
+
+                <span>⌕</span>
+
+                <input type="search"
+                       id="userSearch"
+                       placeholder="¿Qué quieres reproducir?"
+                       aria-label="Buscar música" />
+
+                <span class="u-search-end">▣</span>
+
+            </div>
+
+        </div>
+
+        <div class="u-header-right">
+            <a class="sn-catalog-link" href="/Catalogo">♫ Mi música</a>
+
+            <span class="u-account-name">
+                @nombre
+            </span>
+
+            <div class="u-profile-wrapper">
+
+                <button type="button"
+                        class="u-avatar"
+                        id="profileButton"
+                        aria-label="Abrir perfil">
+                    @if (!string.IsNullOrWhiteSpace(avatar))
+                    {
+                        <img src="/Perfil/Foto?id=@Uri.EscapeDataString(usuarioId)"
+                             alt="Foto del usuario"
+                             style="width:100%;height:100%;border-radius:50%;object-fit:cover" />
+                    }
+                    else { @inicial }
+                </button>
+
+                <div class="u-profile-menu"
+                     id="profileMenu"
+                     hidden>
+
+                    <strong>@nombre</strong>
+                    <small>@correo</small>
+                    <a class="sc-menu-link" href="/Perfil/Editar">Editar perfil</a>
+                    <a class="sc-menu-link" href="/Social/MiEspacio">Mi espacio y comunidad</a>
+                    <a class="sc-menu-link" href="/Social/Perfil?id=@Uri.EscapeDataString(usuarioId)">Ver perfil público</a>
+
+                    <form asp-controller="Cuenta"
+                          asp-action="CerrarSesion"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit">
+                            Cerrar sesión
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- TRES PANELES -->
+    <div class="u-workspace">
+
+        <!-- BIBLIOTECA -->
+        <aside class="u-library">
+
+            <div class="u-library-header">
+
+                <button type="button"
+                        id="toggleLibrary"
+                        class="u-plain-button"
+                        title="Expandir o contraer biblioteca">
+                    ☷
+                </button>
+
+                <strong class="u-lib-label">
+                    Tu biblioteca
+                </strong>
+
+                <button type="button"
+                        id="addSongButton"
+                        class="u-add-button"
+                        title="Crear playlist">
+                    +
+                </button>
+
+            </div>
+
+            <!-- FILTROS -->
+            <div class="u-library-filters">
+
+                <button type="button"
+                        class="u-library-filter selected"
+                        data-library-filter="todo">
+                    Todo
+                </button>
+
+                <button type="button"
+                        class="u-library-filter"
+                        data-library-filter="playlist">
+                    Playlists
+                </button>
+
+                <button type="button"
+                        class="u-library-filter"
+                        data-library-filter="artista">
+                    Artistas
+                </button>
+
+                <button type="button"
+                        class="u-library-filter"
+                        data-library-filter="album">
+                    Álbumes
+                </button>
+
+            </div>
+
+            <div class="u-lib-search-row">
+                <span>⌕</span>
+                <span>Recientes ☷</span>
+            </div>
+
+            <!-- PLAYLISTS DE LA BIBLIOTECA -->
+            <div class="u-library-items">
+
+                <button type="button"
+                        class="u-lib-item"
+                        data-library-kind="playlist"
+                        data-add-files>
+
+                    <span class="u-lib-art liked-art">
+                        ♥
+                    </span>
+
+                    <span class="u-lib-copy">
+                        <strong>Tus me gusta</strong>
+                        <small>
+                            Playlist · Tus favoritas
+                        </small>
+                    </span>
+
+                </button>
+
+                <button type="button"
+                        class="u-lib-item"
+                        data-library-kind="playlist"
+                        data-add-files>
+
+                    <span class="u-lib-art art-neon">
+                        ♫
+                    </span>
+
+                    <span class="u-lib-copy">
+                        <strong>Mi playlist</strong>
+                        <small>Playlist · @nombre</small>
+                    </span>
+
+                </button>
+
+                <button type="button"
+                        class="u-lib-item"
+                        data-library-kind="playlist"
+                        data-add-files>
+
+                    <span class="u-lib-art art-orange">
+                        ☀
+                    </span>
+
+                    <span class="u-lib-copy">
+                        <strong>Para programar</strong>
+                        <small>Playlist · @nombre</small>
+                    </span>
+
+                </button>
+
+                <button type="button"
+                        class="u-lib-item"
+                        data-library-kind="playlist"
+                        data-add-files>
+
+                    <span class="u-lib-art art-blue">
+                        ♪
+                    </span>
+
+                    <span class="u-lib-copy">
+                        <strong>Fiesta</strong>
+                        <small>Playlist · @nombre</small>
+                    </span>
+
+                </button>
+
+                <button type="button"
+                        class="u-lib-item"
+                        data-library-kind="album"
+                        data-add-files>
+
+                    <span class="u-lib-art art-purple">
+                        ◈
+                    </span>
+
+                    <span class="u-lib-copy">
+                        <strong>Sonidos nocturnos</strong>
+                        <small>
+                            Álbum de demostración
+                        </small>
+                    </span>
+
+                </button>
+
+                <button type="button"
+                        class="u-lib-item"
+                        data-library-kind="artista"
+                        data-add-files>
+
+                    <span class="u-lib-art artist-art">
+                        ★
+                    </span>
+
+                    <span class="u-lib-copy">
+                        <strong>Mis artistas</strong>
+                        <small>
+                            Artistas favoritos
+                        </small>
+                    </span>
+
+                </button>
+
+            </div>
+
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="u-main">
+            @RenderBody()
+        </main>
+
+        <!-- PANEL DERECHO -->
+        <aside class="u-details" id="detailsPanel">
+
+            <div class="u-details-header">
+
+                <strong>Reproduciendo ahora</strong>
+
+                <button type="button"
+                        id="closeDetails"
+                        class="u-plain-button"
+                        title="Cerrar panel">
+                    ×
+                </button>
+
+            </div>
+
+            <div class="u-details-art" id="detailsArt">
+                ♫
+            </div>
+
+            <h2 id="detailsTitle">
+                Tu música
+            </h2>
+
+            <p id="detailsArtist">
+                SpotifyNet
+            </p>
+
+            <div class="u-detail-box">
+
+                <h3>Acerca de la canción</h3>
+
+                <p id="detailsDescription">
+                    Elige archivos de audio de tu equipo
+                    o reproduce canciones guardadas
+                    en tu biblioteca.
+                </p>
+
+            </div>
+
+            <div class="u-detail-box">
+
+                <h3>Tu sesión</h3>
+
+                <p>
+                    Has iniciado sesión correctamente
+                    con tu cuenta de SpotifyNet.
+                </p>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+    <!-- COLA DE REPRODUCCIÓN: permanece montada al navegar -->
+    <section id="queuePanel" class="sn-queue-panel" aria-label="Fila de reproducción" hidden>
+        <header class="sn-queue-header">
+            <div>
+                <span class="sn-queue-eyebrow">SpotifyNet</span>
+                <h2>Fila de reproducción</h2>
+            </div>
+            <button type="button" id="closeQueue" aria-label="Cerrar fila">×</button>
+        </header>
+        <section class="sn-queue-section">
+            <h3>Reproduciendo ahora</h3>
+            <div id="queueCurrent"></div>
+        </section>
+        <section class="sn-queue-section">
+            <h3>A continuación <span id="queueCount" class="sn-queue-count">0</span></h3>
+            <p class="sn-queue-help">Arrastra las canciones para ordenarlas o utiliza las flechas.</p>
+            <div id="queueNext"></div>
+        </section>
+        <section class="sn-queue-section sn-queue-history">
+            <h3>Escuchadas recientemente</h3>
+            <p class="sn-queue-help">Historial temporal de esta sesión.</p>
+            <div id="queueHistory"></div>
+        </section>
+    </section>
+
+    <!-- REPRODUCTOR INFERIOR -->
+    <footer class="u-player">
+
+        <div class="u-player-track">
+
+            <div class="u-player-cover" id="playerCover">
+                ♫
+            </div>
+
+            <div class="u-player-song-info">
+
+                <strong id="playerTitle">
+                    Sin reproducción
+                </strong>
+
+                <small id="playerArtist">
+                    Añade tu música
+                </small>
+
+            </div>
+
+        </div>
+
+        <div class="u-player-center">
+
+            <div class="u-player-controls">
+
+                <button type="button"
+                        id="shuffleButton"
+                        title="Aleatorio">
+                    ⤨
+                </button>
+
+                <button type="button"
+                        id="previousButton"
+                        title="Anterior">
+                    ⏮
+                </button>
+
+                <button type="button"
+                        id="playButton"
+                        class="u-play"
+                        title="Reproducir"
+                        disabled>
+                    ▶
+                </button>
+
+                <button type="button"
+                        id="nextButton"
+                        title="Siguiente">
+                    ⏭
+                </button>
+
+                <button type="button"
+                        id="repeatButton"
+                        title="Repetir canción">
+                    ↻
+                </button>
+
+            </div>
+
+            <div class="u-progress">
+
+                <span id="currentTime">0:00</span>
+
+                <input type="range"
+                       id="progressBar"
+                       min="0"
+                       max="100"
+                       value="0"
+                       step="1"
+                       disabled />
+
+                <span id="totalTime">
+                    0:00
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="u-player-right">
+
+            <button type="button" id="toggleQueue" class="sn-queue-toggle"
+                    title="Abrir fila de reproducción" aria-label="Fila de reproducción"
+                    aria-controls="queuePanel" aria-expanded="false">☷</button>
+
+            <button type="button"
+                    id="toggleDetails"
+                    title="Mostrar u ocultar información">
+                ▣
+            </button>
+
+            <span>🔊</span>
+
+            <input type="range"
+                   id="volumeControl"
+                   min="0"
+                   max="100"
+                   value="70"
+                   aria-label="Volumen" />
+
+        </div>
+
+    </footer>
+
+    <!-- TOKEN DE SEGURIDAD -->
+    <form id="globalAntiForgeryToken" hidden>
+        @Html.AntiForgeryToken()
+    </form>
+
+    <!-- ARCHIVOS MUSICALES LOCALES -->
+    <input type="file"
+           id="musicFileInput"
+           accept="audio/*,.mp3,.wav,.ogg,.m4a"
+           multiple
+           hidden />
+
+    <!-- REPRODUCTOR HTML5 -->
+    <audio id="musicAudio" preload="metadata"></audio>
+
+</div>
+
+<!-- REPRODUCTOR Y PLAYLISTS -->
+<script src="~/js/usuario.js"
+        asp-append-version="true"></script>
+
+<!-- PORTADAS Y NAVEGACION CONTINUA -->
+<script src="~/js/fidelidad.js"
+        asp-append-version="true"></script>
+
+<!-- BUSCADOR MUSICAL -->
+<script src="~/js/buscador.js"
+        asp-append-version="true"></script>
+
+<script src="~/js/social.js" asp-append-version="true"></script>
+<script src="~/js/catalogo.js" asp-append-version="true"></script>
+
+@await RenderSectionAsync("Scripts", required: false)
+
+    <script src="~/js/bloque-e.js" asp-append-version="true"></script>
+    <script src="~/js/responsive.js" asp-append-version="true"></script>
+    <script src="~/js/inicio-real.js" asp-append-version="true"></script>
+    <script src="~/js/favoritos.js" asp-append-version="true"></script>
+    <script src="~/js/explorar.js" asp-append-version="true"></script>
+    <script src="~/js/mixes-reales.js" asp-append-version="true"></script>
+    <script src="~/js/bloque-j.js" asp-append-version="true"></script>
+</body>
+</html>

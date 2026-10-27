@@ -1,0 +1,15 @@
+@model SpotifyNet.Models.SocialPublicProfileViewModel
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewData["Title"] = "Perfil de " + Model.DisplayName;
+}
+<section class="sc-page">
+    <div class="sc-public-header"><img src="/Perfil/Foto?id=@Uri.EscapeDataString(Model.UserId)" alt="Foto de perfil" onerror="this.style.display='none'" />
+        <div><span class="sc-kicker">PERFIL PÚBLICO</span><h1>@Model.DisplayName</h1><p>@Model.Bio</p></div>
+    </div>
+    <h2>Playlists públicas</h2>
+    @if (Model.PublicPlaylists.Count == 0) { <p class="sc-muted">Este usuario todavía no ha compartido playlists públicas.</p> }
+    <div class="sc-list">@foreach (var item in Model.PublicPlaylists) {
+        <a class="sc-list-item" href="/Social/Compartida?token=@item.Token"><strong>@item.Name</strong><span>Escuchar →</span></a>
+    }</div>
+</section>

@@ -1,0 +1,23 @@
+SPOTIFYNET - BLOQUE 26.3 (REGISTRO + DOCKER + GITHUB)
+
+1. Conserva el respaldo `SpotifyNet - copia` que ya hiciste.
+2. Deten `dotnet run` con Ctrl+C.
+3. Extrae este ZIP y COPIA SU CONTENIDO a:
+   E:\Proyectos Universidad\SpotifyNet
+   Acepta reemplazar: Controllers/CuentaController.cs y Program.cs.
+   Los demas archivos son NUEVOS en la raiz del proyecto.
+4. En la terminal de VS Code, dentro de la carpeta SpotifyNet, ejecuta:
+   dotnet build
+   dotnet run --launch-profile http
+5. Prueba login, registro y reproducir una cancion guardada.
+6. Para iniciar el contenedor DE DEMOSTRACION en vez del local,
+   deten dotnet run y ejecuta (requiere Docker Desktop):
+   docker compose up --build -d
+   docker compose ps
+   Abre http://localhost:5267.
+
+ATENCION: El Docker nuevo usa una base de datos propia en un volumen,
+y no incluye los MP3 de la laptop/PC. Es correcto y evita publicar datos.
+No ejecutes docker compose down -v si deseas conservar sus datos.
+
+Este ZIP no modifica los archivos de SQLite ni la carpeta App_Data/audio.

@@ -1,0 +1,58 @@
+@model SpotifyNet.Models.CatalogoViewModel
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewData["Title"] = "Mi música";
+    bool albumes = Model.View == "albumes";
+}
+<div class="sn-catalog" id="snCatalogPage">
+    <header class="sn-cat-hero">
+        <span>MI BIBLIOTECA</span>
+        <h1>Descubre tu música</h1>
+        <p>Artistas, álbumes y canciones que subiste a SpotifyNet. Puedes corregir sus datos y escucharlas sin salir del reproductor.</p>
+        <div class="sn-cat-stat">@Model.TotalSongs canciones en esta vista</div>
+    </header>
+    <div class="sn-cat-toolbar">
+        <nav aria-label="Explorar biblioteca" class="sn-cat-tabs">
+            <a class="@(albumes ? "" : "active")" href="/Catalogo?vista=artistas">Artistas</a>
+            <a class="@(albumes ? "active" : "")" href="/Catalogo?vista=albumes">Álbumes</a>
+        </nav>
+        <form action="/Catalogo" method="get" class="sn-cat-search">
+            <input type="hidden" name="vista" value="@Model.View" />
+            <input type="search" name="buscar" value="@Model.Search" maxlength="90"
+                placeholder="Buscar artista, álbum o canción" aria-label="Buscar en mi música" />
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+    @if (Model.Groups.Count == 0) {
+        <div class="sn-cat-empty">
+            <h2>No encontramos canciones</h2>
+            <p>Sube canciones desde una playlist personal o prueba otra búsqueda. Las listas compartidas no duplican el MP3.</p>
+            <a href="/">Ir a Inicio</a>
+        </div>
+    } else {
+        @foreach (var grupo in Model.Groups) {
+            <section class="sn-cat-section">
+                <div class="sn-cat-section-heading">
+                    <div class="sn-cat-type">@(albumes ? "ÁLBUM" : "ARTISTA")</div>
+                    <h2>@grupo.Name</h2>
+                    <small>@grupo.Songs.Count canción(es)</small>
+                </div>
+                <div class="sn-cat-items">
+                    @foreach (var cancion in grupo.Songs) {
+                        <div class="sn-cat-song" data-song-id="@cancion.Id" data-song-title="@cancion.Title"
+                             data-song-artist="@cancion.Artist" data-song-album="@cancion.Album"
+                             data-song-url="@cancion.Url" data-song-cover="@cancion.CoverUrl">
+                            <button type="button" class="sn-cat-play" title="Reproducir @cancion.Title">▶</button>
+                            <div class="sn-cat-song-info">
+                                <strong class="sn-cat-song-title">@cancion.Title</strong>
+                                <span class="sn-cat-song-sub">@cancion.Artist · @cancion.Album</span>
+                            </div>
+                            <a class="sn-cat-playlist-link" href="@cancion.PlaylistUrl">@cancion.PlaylistName</a>
+                            <button type="button" class="sn-cat-edit" data-edit-track="@cancion.Id" title="Editar título, artista y álbum">✎ Editar</button>
+                        </div>
+                    }
+                </div>
+            </section>
+        }
+    }
+</div>

@@ -1,0 +1,56 @@
+/* SpotifyNet - Bloque A: fila de reproducción */
+body.user-page .sn-queue-toggle { min-width: 28px; font-size: 21px; cursor: pointer; }
+body.user-page .sn-queue-toggle.is-active { color: #1ed760; }
+body.user-page .sn-queue-panel {
+    position: fixed; z-index: 800; right: 12px; bottom: 88px;
+    width: min(410px, calc(100vw - 24px)); max-height: min(73vh, 670px);
+    overflow-y: auto; overflow-x: hidden;
+    background: #191919; color: #fff; border: 1px solid #404040;
+    border-radius: 10px; box-shadow: 0 16px 58px rgba(0,0,0,.78);
+    scrollbar-width: thin; scrollbar-color: #606060 transparent;
+}
+body.user-page .sn-queue-panel[hidden] { display: none !important; }
+body.user-page .sn-queue-header { position: sticky; top: 0; z-index: 1;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 18px 15px; background: #242424; border-bottom: 1px solid #393939;
+}
+body.user-page .sn-queue-eyebrow { font-size: 10px; color: #1ed760; font-weight: 800; }
+body.user-page .sn-queue-header h2 { margin: 4px 0 0; font-size: 17px; font-weight: 800; }
+body.user-page .sn-queue-header button { color: #ddd; font-size: 25px; border: 0;
+    background: transparent; cursor: pointer; border-radius: 50%; padding: 2px 9px; }
+body.user-page .sn-queue-header button:hover { color: #fff; background: #444; }
+body.user-page .sn-queue-section { padding: 14px 12px 5px; }
+body.user-page .sn-queue-section h3 { color: #f1f1f1; margin: 3px 6px 10px; font-size: 13px; }
+body.user-page .sn-queue-count { color: #1ed760; padding-left: 7px; }
+body.user-page .sn-queue-help { color: #a9a9a9; margin: -3px 6px 12px; font-size: 11px; line-height: 1.45; }
+body.user-page .sn-queue-empty { color: #999; padding: 12px 6px 19px; font-size: 12px; }
+body.user-page .sn-queue-row { display: flex; align-items: center; gap: 9px;
+    min-height: 58px; padding: 6px; border-radius: 5px; }
+body.user-page .sn-queue-row:hover { background: #303030; }
+body.user-page .sn-queue-row[draggable=true] { cursor: grab; }
+body.user-page .sn-queue-row.sn-queue-dragging { opacity: .4; }
+body.user-page .sn-queue-playing { background: #21372b; }
+body.user-page .sn-queue-cover { width: 42px; height: 42px; flex-shrink: 0;
+    display: grid; place-items: center; color: #1ed760; background: #225f4d;
+    border-radius: 5px; overflow: hidden; }
+body.user-page .sn-queue-cover img { width: 100%; height: 100%; object-fit: cover; }
+body.user-page .sn-queue-song { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
+body.user-page .sn-queue-song strong { color: #fff; font-size: 12px; font-weight: 650;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body.user-page .sn-queue-song small { color: #aaa; font-size: 10px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body.user-page .sn-queue-row-actions { display: flex; gap: 1px; flex-shrink: 0; }
+body.user-page .sn-queue-action { min-width: 25px; height: 26px;
+    display: grid; place-items: center; font-size: 14px; line-height: 1;
+    border: 0; border-radius: 4px; color: #b3b3b3; background: transparent; cursor: pointer; }
+body.user-page .sn-queue-action:hover,
+body.user-page .sn-queue-action:focus-visible { color: #fff; background: #505050; outline: none; }
+body.user-page .sn-queue-live { color: #1ed760; font-size: 10px; padding: 0 6px; }
+body.user-page .sn-queue-history { border-top: 1px solid #373737; margin-top: 12px; padding-bottom: 16px; }
+@media (max-width: 760px) {
+    body.user-page .sn-queue-panel { right: 6px; bottom: 83px;
+        width: min(390px, calc(100vw - 12px)); max-height: 65vh; }
+    body.user-page .sn-queue-row { gap: 5px; }
+    body.user-page .sn-queue-cover { width: 34px; height: 34px; }
+    body.user-page .sn-queue-action { min-width: 23px; }
+}

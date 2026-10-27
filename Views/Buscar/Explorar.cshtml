@@ -1,0 +1,41 @@
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewData["Title"] = "Buscar música";
+    string consulta = ViewData["Consulta"]?.ToString() ?? "";
+}
+<div class="sn-explore" id="snExplore" data-query="@consulta">
+    <header class="sn-explore-header">
+        <span>EXPLORA TU BIBLIOTECA</span>
+        <h1>Busca lo que quieras escuchar</h1>
+        <p>Encuentra las canciones que subiste, tus playlists, artistas y álbumes. Todo en un mismo lugar.</p>
+        <form id="snExploreForm" action="/Buscar/Explorar" method="get">
+            <label class="sn-explore-input">
+                <span aria-hidden="true">⌕</span>
+                <input name="q" id="snExploreQuery" type="search" value="@consulta"
+                    maxlength="80" placeholder="Canción, artista, álbum o playlist" aria-label="Buscar en toda mi biblioteca" />
+            </label>
+            <button type="submit">Buscar</button>
+        </form>
+    </header>
+    <div class="sn-explore-body">
+        <div class="sn-explore-tabs" id="snExploreTabs" aria-label="Tipos de resultado">
+            <button type="button" data-explore-tab="all" aria-pressed="true" class="selected">Todo</button>
+            <button type="button" data-explore-tab="songs" aria-pressed="false">Canciones</button>
+            <button type="button" data-explore-tab="playlists" aria-pressed="false">Playlists</button>
+            <button type="button" data-explore-tab="artists" aria-pressed="false">Artistas</button>
+            <button type="button" data-explore-tab="albums" aria-pressed="false">Álbumes</button>
+        </div>
+        <div id="snExploreStatus" role="status" aria-live="polite"></div>
+        <div id="snExploreResults">
+            <div class="sn-explore-empty">
+                <h2>Tu música está a un clic</h2>
+                <p>Introduce dos o más caracteres para empezar a buscar.</p>
+                <div class="sn-explore-shortcuts">
+                    <a href="/Catalogo?vista=artistas">Explorar artistas</a>
+                    <a href="/Catalogo?vista=albumes">Explorar álbumes</a>
+                    <a href="/Home/Playlist?slug=tus-me-gusta">Tus me gusta ♥</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,151 @@
+
+@model SpotifyNet.Models.LoginViewModel
+
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Iniciar sesión";
+    bool mostrarContrasena = ViewBag.MostrarContrasena is true;
+}
+
+<div class="auth-box">
+
+    <a href="/" class="auth-logo" title="SpotifyNet">♫</a>
+
+    <h1>¡Hola de<br />nuevo!</h1>
+
+    <form asp-controller="Cuenta"
+          asp-action="IniciarSesion"
+          method="post"
+          class="auth-form">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly"
+             class="validation-box"></div>
+
+        <section id="pasoCorreo"
+                 class="auth-step"
+                 hidden="@mostrarContrasena">
+
+            <label asp-for="Email">Correo electrónico</label>
+
+            <input asp-for="Email"
+                   class="auth-input"
+                   type="email"
+                   placeholder="nombre@correo.com"
+                   autocomplete="email" />
+
+            <span asp-validation-for="Email"
+                  class="field-error"></span>
+
+            <button id="btnContinuar"
+                    type="button"
+                    class="green-btn">
+                Continuar
+            </button>
+        </section>
+
+        <section id="pasoClave"
+                 class="auth-step"
+                 hidden="@(!mostrarContrasena)">
+
+            <div class="email-preview">
+                <span id="emailMostrado">@Model.Email</span>
+                <button id="btnCambiarCorreo"
+                        type="button">
+                    Cambiar
+                </button>
+            </div>
+
+            <label asp-for="Password">Contraseña</label>
+
+            <input asp-for="Password"
+                   class="auth-input"
+                   type="password"
+                   placeholder="Tu contraseña"
+                   autocomplete="current-password" />
+
+            <span asp-validation-for="Password"
+                  class="field-error"></span>
+
+            <label class="remember-row">
+                <input asp-for="Recordarme" />
+                Recordarme
+            </label>
+
+            <button type="submit" class="green-btn">
+                Iniciar sesión
+            </button>
+        </section>
+
+    </form>
+
+    <div class="separator">
+        <span>o</span>
+    </div>
+
+    <div class="social-options">
+        <button type="button" disabled class="social-btn"
+                title="Próximamente">
+            <span class="social-symbol">G</span>
+            Continuar con Google
+        </button>
+
+        <button type="button" disabled class="social-btn"
+                title="Próximamente">
+            <span class="social-symbol">f</span>
+            Continuar con Facebook
+        </button>
+
+        <button type="button" disabled class="social-btn"
+                title="Próximamente">
+            <span class="social-symbol">●</span>
+            Continuar con Apple
+        </button>
+    </div>
+
+    <div class="auth-switch">
+        <p>¿No tienes cuenta?</p>
+        <a asp-controller="Cuenta"
+           asp-action="Registrarse">
+            Regístrate
+        </a>
+    </div>
+
+    <a href="/" class="auth-back">
+        Volver al inicio
+    </a>
+</div>
+
+@section Scripts {
+<script>
+    const pasoCorreo = document.getElementById("pasoCorreo");
+    const pasoClave = document.getElementById("pasoClave");
+    const correo = document.getElementById("Email");
+    const clave = document.getElementById("Password");
+
+    document.getElementById("btnContinuar")
+        .addEventListener("click", function () {
+
+            if (!correo.reportValidity()) {
+                return;
+            }
+
+            document.getElementById("emailMostrado")
+                .textContent = correo.value;
+
+            pasoCorreo.hidden = true;
+            pasoClave.hidden = false;
+
+            clave.focus();
+        });
+
+    document.getElementById("btnCambiarCorreo")
+        .addEventListener("click", function () {
+
+            pasoClave.hidden = true;
+            pasoCorreo.hidden = false;
+            correo.focus();
+        });
+</script>
+}

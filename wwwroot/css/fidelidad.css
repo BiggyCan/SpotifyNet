@@ -1,0 +1,215 @@
+/* PASO 17: ajustes sobre usuario.css, sin alterar el reproductor */
+/* Las portadas se toman de capturas proporcionadas como referencia. */
+
+.u-workspace {
+    grid-template-columns: 420px minmax(0,1fr) 415px;
+}
+
+.u-app.is-library-collapsed .u-workspace {
+    grid-template-columns: 70px minmax(0,1fr) 415px;
+}
+
+.u-app.is-details-hidden .u-workspace {
+    grid-template-columns: 420px minmax(0,1fr);
+}
+
+.u-app.is-library-collapsed.is-details-hidden .u-workspace {
+    grid-template-columns: 70px minmax(0,1fr);
+}
+
+.u-library,
+.u-main,
+.u-details {
+    border-radius: 7px;
+}
+
+.u-lib-item {
+    min-height: 57px;
+}
+
+.u-lib-art {
+    width: 48px;
+    height: 48px;
+}
+
+.u-lib-copy strong {
+    font-size: 13px;
+}
+
+.u-lib-copy small {
+    font-size: 11px;
+}
+
+.u-home-content {
+    padding: 16px 30px 65px;
+}
+
+.u-quick-item {
+    height: 63px;
+}
+
+.u-quick-cover {
+    width: 63px;
+    height: 63px;
+}
+
+.u-quick-item strong {
+    font-size: 13px;
+}
+
+.u-music-section {
+    margin-top: 43px;
+}
+
+.u-section-head h2 {
+    font-size: 23px;
+    letter-spacing: -.5px;
+}
+
+.u-music-grid {
+    grid-auto-columns: 174px;
+    gap: 16px;
+}
+
+.u-music-card {
+    padding: 2px;
+}
+
+.u-music-card > strong {
+    font-size: 14px;
+}
+
+.u-music-card > small {
+    font-size: 12px;
+}
+
+.u-album-art {
+    background-position: center;
+    background-size: cover;
+}
+
+.u-quick-cover,
+.u-lib-art {
+    background-position: center;
+    background-size: cover;
+}
+
+.u-photo-cover {
+    color: transparent !important;
+    font-size: 0 !important;
+}
+
+.u-photo-cover > * {
+    display: none;
+}
+
+.u-music-card:hover {
+    background: #222;
+}
+
+.u-quick-item:hover {
+    background: #484048;
+}
+
+.u-details-art.u-reference-art {
+    background-position: center;
+    background-size: cover;
+    color: transparent;
+    font-size: 0;
+}
+
+.u-main,
+.u-library-items,
+.u-details,
+.u-music-grid {
+    scrollbar-color: #535353 transparent;
+    scrollbar-width: thin;
+}
+
+.u-main::-webkit-scrollbar,
+.u-details::-webkit-scrollbar {
+    width: 7px;
+}
+
+.u-main::-webkit-scrollbar-track,
+.u-details::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.u-main::-webkit-scrollbar-thumb,
+.u-details::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 8px;
+}
+
+.u-library-items::-webkit-scrollbar {
+    width: 6px;
+}
+
+.u-library-items::-webkit-scrollbar-thumb {
+    background: #4b4b4b;
+}
+
+/* Corrige tamaño de imágenes si la biblioteca está contraída */
+.u-app.is-library-collapsed .u-library-header {
+    justify-content: center;
+}
+
+.u-app.is-library-collapsed .u-lib-item {
+    justify-content: center;
+}
+
+@media (max-width: 1500px) {
+    .u-workspace {
+        grid-template-columns: 330px minmax(0,1fr) 320px;
+    }
+
+    .u-app.is-library-collapsed .u-workspace {
+        grid-template-columns: 70px minmax(0,1fr) 320px;
+    }
+
+    .u-app.is-details-hidden .u-workspace {
+        grid-template-columns: 330px minmax(0,1fr);
+    }
+
+    .u-app.is-library-collapsed.is-details-hidden .u-workspace {
+        grid-template-columns: 70px minmax(0,1fr);
+    }
+
+    .u-music-grid {
+        grid-auto-columns: 154px;
+    }
+}
+
+@media (max-width: 1250px) {
+    .u-workspace,
+    .u-app.is-details-hidden .u-workspace {
+        grid-template-columns: 280px minmax(0,1fr);
+    }
+
+    .u-app.is-library-collapsed .u-workspace,
+    .u-app.is-library-collapsed.is-details-hidden .u-workspace {
+        grid-template-columns: 70px minmax(0,1fr);
+    }
+
+    .u-details {
+        display: none;
+    }
+}
+
+@media (max-width: 760px) {
+    .u-workspace,
+    .u-app.is-library-collapsed .u-workspace,
+    .u-app.is-details-hidden .u-workspace,
+    .u-app.is-library-collapsed.is-details-hidden .u-workspace {
+        grid-template-columns: 60px minmax(0,1fr);
+    }
+
+    .u-music-grid {
+        grid-auto-columns: 132px;
+    }
+
+    .u-home-content {
+        padding: 15px;
+    }
+}

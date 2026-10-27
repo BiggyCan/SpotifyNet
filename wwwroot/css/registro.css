@@ -1,0 +1,115 @@
+/* SpotifyNet - Registro progresivo, interfaz de demostración */
+.reg-shell {
+    width: min(100% - 40px, 375px);
+    margin: 85px auto 50px;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.reg-shell .reg-logo {
+    margin-bottom: 24px;
+    width: 28px;
+    height: 28px;
+    font-size: 22px;
+    line-height: 1;
+}
+.reg-form { width: 100%; }
+.reg-step[hidden], .reg-client-error[hidden] { display: none !important; }
+.reg-title {
+    font-size: clamp(35px, 4vw, 44px);
+    line-height: 1.12;
+    letter-spacing: -1.8px;
+    font-weight: 900;
+    margin: 0 0 37px;
+    text-align: center;
+}
+.reg-field { margin: 0 0 14px; }
+.reg-field > label, .reg-fieldset > legend,
+.reg-requirements-title {
+    display: block;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 750;
+    margin: 0 0 8px;
+}
+.reg-input {
+    width: 100%;
+    height: 43px;
+    padding: 9px 11px;
+    color: #fff;
+    background: #121212;
+    border: 1px solid #747474;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+.reg-input:focus { border-color: #fff; box-shadow: 0 0 0 1px #fff; }
+.reg-input::placeholder { color: #aaa; }
+.reg-green-btn {
+    width: 100%; height: 43px;
+    display: flex; justify-content: center; align-items: center;
+    color: #000; background: #1ed760; border: none;
+    border-radius: 999px;
+    font-weight: 800; font-size: 14px;
+    cursor: pointer;
+    margin: 10px 0 0;
+    transition: background .15s, transform .15s;
+}
+.reg-green-btn:hover { background: #3be477; transform: scale(1.015); }
+.reg-green-btn:disabled { opacity: .6; cursor: wait; }
+.reg-or { text-align: center; font-weight: 700; margin: 17px 0 15px; }
+.reg-social-list { display: grid; gap: 8px; }
+.reg-social {
+    width: 100%; min-height: 41px;
+    position: relative;
+    color: #c0c0c0; background: transparent;
+    border: 1px solid #5a5a5a;
+    border-radius: 999px;
+    font-size: 12px; font-weight: 750;
+}
+.reg-social:disabled { cursor: not-allowed; }
+.reg-google,.reg-apple { position: absolute; left: 20px; font-size: 18px; top: 50%; transform: translateY(-50%); }
+.reg-google { color: #4285f4; }
+.reg-social-note { text-align: center; color: #8b8b8b; font-size: 10px; line-height: 1.5; margin: 10px 0 0; }
+.reg-login { margin-top: 50px; display: grid; gap: 14px; justify-items: center; font-size: 12px; }
+.reg-login > span { color: #b3b3b3; }
+.reg-login a { color: white; font-weight: 750; text-decoration: none; }
+.reg-login a:hover { text-decoration: underline; }
+.reg-progress { height: 2px; width: 100%; background: #4a4a4a; overflow: hidden; margin: 8px 0 20px; }
+.reg-progress span { display: block; height: 100%; background: #1ed760; }
+.reg-step-header { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 30px; }
+.reg-step-header p { color: #b3b3b3; font-size: 12px; margin: 0 0 8px; }
+.reg-step-header h2 { color: #fff; font-size: 14px; font-weight: 800; margin: 0; }
+.reg-back { flex: 0 0 24px; padding: 0; border: 0; background: none; color: #b9b9b9; font-size: 32px; line-height: 24px; cursor: pointer; }
+.reg-back:hover { color: #fff; }
+.reg-password-wrap { position: relative; }
+.reg-password-wrap input { padding-right: 48px; }
+.reg-reveal { position: absolute; right: 5px; top: 4px; width: 37px; height: 35px; background: transparent; color: #bbb; border: 0; cursor: pointer; font-size: 19px; }
+.reg-requirements-title { margin-top: 22px; }
+.reg-requirements { list-style: none; margin: 0 0 35px; padding: 0; display: grid; gap: 12px; }
+.reg-requirements li { display: flex; align-items: center; gap: 9px; font-size: 11px; font-weight: 700; }
+.reg-requirements li::before { content: ''; width: 10px; height: 10px; border-radius: 50%; border: 1px solid #aaa; box-sizing: border-box; flex-shrink: 0; }
+.reg-requirements li.is-valid::before { content: '✓'; background: #1ed760; border-color: #1ed760; color: #000; font-size: 8px; line-height: 10px; text-align: center; }
+.reg-step-next { margin-top: 34px; }
+.reg-hint { color: #b8b8b8; font-size: 11px; line-height: 1.5; margin: 0 0 7px; }
+.reg-birth-row { display: grid; grid-template-columns: 55px minmax(0, 1fr) 83px; gap: 7px; }
+.reg-birth-row input { padding: 8px; }
+.reg-birth-row select { padding: 6px 4px; color-scheme: dark; }
+.reg-fieldset { padding: 0; margin: 0 0 17px; border: none; min-width: 0; }
+.reg-gender-options { display: flex; flex-wrap: wrap; column-gap: 18px; row-gap: 13px; margin-top: 12px; }
+.reg-radio-option { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; cursor: pointer; }
+.reg-radio-option input { margin: 0; accent-color: #1ed760; }
+.reg-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.reg-check-card { background: #242424; border-radius: 5px; padding: 13px 12px; margin-bottom: 8px; font-size: 11px; line-height: 1.55; }
+.reg-check-card label { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; }
+.reg-check-card input { flex: 0 0 auto; margin: 3px 0 0; accent-color: #1ed760; }
+.reg-terms-note { font-size: 11px; color: #c5c5c5; line-height: 1.65; margin: 14px 0; }
+.reg-required-card { border: 1px solid #505050; background: #191919; }
+.reg-summary, .reg-error, .reg-client-error { color: #ff9999; font-size: 11px; line-height: 1.5; }
+.reg-summary:empty, .reg-error:empty { display: none; }
+.reg-summary ul { padding-left: 18px; }
+.reg-client-error { padding-top: 8px; }
+@media (max-width: 480px) {
+    .reg-shell { margin-top: 42px; width: min(100% - 32px, 375px); }
+    .reg-title { font-size: 36px; }
+}

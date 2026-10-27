@@ -1,0 +1,1140 @@
+
+/*
+====================================================
+ SPOTIFYNET - PASO 25
+ PULIDO VISUAL DE LA INTERFAZ
+====================================================
+
+ Este archivo mejora la presentación sin modificar
+ las funciones de reproducción o la base de datos.
+*/
+
+body.user-page {
+    --sp-background: #000000;
+    --sp-panel: #121212;
+    --sp-panel-raised: #1f1f1f;
+    --sp-panel-hover: #282828;
+    --sp-border: #ffffff18;
+    --sp-text: #ffffff;
+    --sp-muted: #b3b3b3;
+    --sp-green: #1ed760;
+
+    background: var(--sp-background);
+    color: var(--sp-text);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ================================================
+   1. BARRA SUPERIOR
+================================================ */
+
+body.user-page .u-header {
+    background: #000;
+    color: white;
+    border-bottom: 0;
+}
+
+body.user-page .u-logo {
+    color: #fff;
+    text-decoration: none;
+    transition: transform .2s ease;
+}
+
+body.user-page .u-logo:hover {
+    transform: scale(1.08);
+}
+
+body.user-page .u-home-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 45px;
+    height: 45px;
+
+    border-radius: 50%;
+    border: none;
+
+    background: #1f1f1f;
+    color: white;
+
+    text-decoration: none;
+    font-size: 22px;
+
+    transition:
+        background .18s ease,
+        transform .18s ease;
+}
+
+body.user-page .u-home-button:hover {
+    background: #303030;
+    transform: scale(1.045);
+}
+
+/* Buscador principal */
+
+body.user-page .u-search {
+    position: relative;
+
+    background: #242424;
+    border: 1px solid transparent;
+    border-radius: 999px;
+
+    transition:
+        background .15s ease,
+        border-color .15s ease,
+        box-shadow .15s ease;
+}
+
+body.user-page .u-search:hover {
+    background: #2d2d2d;
+}
+
+body.user-page .u-search:focus-within {
+    background: #2a2a2a;
+    border-color: #fff;
+    box-shadow: 0 0 0 1px #ffffff25;
+}
+
+body.user-page .u-search input {
+    color: #fff;
+    background: transparent;
+
+    font-size: 13px;
+    border: none;
+    outline: none;
+
+    min-width: 0;
+}
+
+body.user-page .u-search input::placeholder {
+    color: #bdbdbd;
+}
+
+body.user-page .u-search-end {
+    opacity: .75;
+}
+
+body.user-page .u-avatar {
+    display: grid;
+    place-items: center;
+
+    width: 34px;
+    height: 34px;
+
+    border-radius: 50%;
+    border: 5px solid #242424;
+
+    box-sizing: content-box;
+    cursor: pointer;
+}
+
+body.user-page .u-avatar:hover {
+    transform: scale(1.04);
+}
+
+body.user-page .u-profile-menu {
+    background: #282828;
+    border: 1px solid #424242;
+    border-radius: 7px;
+    box-shadow: 0 15px 35px #0009;
+}
+
+/* ================================================
+   2. DISTRIBUCIÓN GENERAL
+================================================ */
+
+body.user-page .u-workspace {
+    gap: 8px;
+}
+
+body.user-page .u-library,
+body.user-page .u-main,
+body.user-page .u-details {
+    min-width: 0;
+
+    background: var(--sp-panel);
+    border-radius: 8px;
+}
+
+body.user-page .u-library,
+body.user-page .u-details {
+    border: 1px solid #ffffff05;
+}
+
+body.user-page .u-main {
+    scrollbar-width: thin;
+    scrollbar-color: #666 transparent;
+}
+
+body.user-page .u-main::-webkit-scrollbar {
+    width: 7px;
+}
+
+body.user-page .u-main::-webkit-scrollbar-thumb {
+    background: #666;
+    border-radius: 10px;
+}
+
+/* ================================================
+   3. BIBLIOTECA IZQUIERDA
+================================================ */
+
+body.user-page .u-library-header {
+    min-height: 55px;
+}
+
+body.user-page .u-lib-label {
+    color: white;
+
+    font-size: 14px;
+    font-weight: 800;
+}
+
+body.user-page .u-plain-button {
+    color: #b3b3b3;
+
+    border: none;
+    cursor: pointer;
+
+    transition:
+        color .16s ease,
+        background .16s ease;
+}
+
+body.user-page .u-plain-button:hover {
+    color: white;
+}
+
+/* Convertir el botón + en + Crear */
+
+body.user-page #addSongButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    width: auto;
+    min-width: 76px;
+    height: 35px;
+
+    padding: 0 11px;
+
+    border: none;
+    border-radius: 20px;
+
+    background: #232323;
+    color: #fff;
+
+    font-size: 20px;
+    font-weight: 400;
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition: background .15s ease;
+}
+
+body.user-page #addSongButton::after {
+    content: "Crear";
+    font-size: 12px;
+    font-weight: 750;
+}
+
+body.user-page #addSongButton:hover {
+    background: #353535;
+}
+
+/* Filtros */
+
+body.user-page .u-library-filters {
+    gap: 7px;
+}
+
+body.user-page .u-library-filter {
+    min-height: 30px;
+    padding: 6px 13px;
+
+    border: none;
+    border-radius: 999px;
+
+    background: #242424;
+    color: white;
+
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+
+    cursor: pointer;
+    transition: background .15s ease;
+}
+
+body.user-page .u-library-filter:hover {
+    background: #343434;
+}
+
+body.user-page .u-library-filter.selected {
+    background: #fff;
+    color: #121212;
+}
+
+body.user-page .u-lib-search-row {
+    color: var(--sp-muted);
+    font-size: 11px;
+}
+
+/* Elementos de biblioteca */
+
+body.user-page .u-library-items {
+    gap: 1px;
+}
+
+body.user-page .u-lib-item {
+    position: relative;
+
+    min-height: 54px;
+    padding: 6px 8px;
+
+    border-radius: 5px;
+    background: transparent;
+
+    color: #fff;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: background .15s ease;
+}
+
+body.user-page .u-lib-item:hover {
+    background: #242424;
+}
+
+body.user-page .u-lib-item:focus-visible {
+    outline: 2px solid white;
+    outline-offset: -2px;
+}
+
+body.user-page .u-lib-art {
+    overflow: hidden;
+    border-radius: 4px;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+body.user-page .u-lib-copy {
+    min-width: 0;
+}
+
+body.user-page .u-lib-copy strong {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+body.user-page .u-lib-copy small {
+    color: #a7a7a7;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+/* ================================================
+   4. TARJETAS DEL INICIO
+================================================ */
+
+body.user-page .u-home-content {
+    color: white;
+}
+
+body.user-page .u-category-tabs button {
+    border-radius: 999px;
+    transition: background .15s ease;
+}
+
+body.user-page .u-quick-grid {
+    gap: 8px;
+}
+
+body.user-page .u-quick-item {
+    overflow: hidden;
+
+    border-radius: 5px;
+    background: #ffffff16;
+    color: #fff;
+
+    text-align: left;
+    cursor: pointer;
+
+    transition:
+        background .18s ease,
+        transform .18s ease;
+}
+
+body.user-page .u-quick-item:hover {
+    background: #ffffff29;
+}
+
+body.user-page .u-quick-cover {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+body.user-page .u-quick-item strong {
+    font-size: 12px;
+    font-weight: 750;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+body.user-page .u-section-head h2 {
+    color: white;
+
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -.4px;
+}
+
+body.user-page .u-section-head > span {
+    color: #b3b3b3;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+body.user-page .u-music-grid {
+    gap: 12px;
+}
+
+body.user-page .u-music-card {
+    min-width: 0;
+
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+
+    text-align: left;
+    cursor: pointer;
+
+    transition:
+        background .18s ease,
+        transform .18s ease;
+}
+
+body.user-page .u-music-card:hover {
+    background: #ffffff13;
+}
+
+body.user-page .u-album-art {
+    position: relative;
+    overflow: hidden;
+
+    aspect-ratio: 1 / 1;
+
+    border-radius: 5px;
+
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    box-shadow: 0 5px 14px #0004;
+}
+
+body.user-page .u-music-card strong {
+    color: white;
+
+    font-size: 12px;
+    line-height: 1.4;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+body.user-page .u-music-card small {
+    color: #a7a7a7;
+    font-size: 11px;
+}
+
+/* ================================================
+   5. CABECERA DE PLAYLIST
+================================================ */
+
+body.user-page .pdetail-page {
+    background: #121212;
+    color: white;
+}
+
+body.user-page .pdetail-hero {
+    min-height: 256px;
+
+    display: flex;
+    align-items: flex-end;
+
+    gap: 20px;
+    padding: 26px 22px 23px;
+
+    border-radius: 8px 8px 0 0;
+
+    background: linear-gradient(
+        180deg,
+        var(--hero-color, #4a365f) 0%,
+        color-mix(
+            in srgb,
+            var(--hero-color, #4a365f) 75%,
+            #0f0f0f
+        ) 100%
+    );
+}
+
+body.user-page .pdetail-cover {
+    width: 184px;
+    height: 184px;
+    min-width: 184px;
+
+    overflow: hidden;
+
+    border-radius: 5px;
+    background: #232323;
+
+    box-shadow: 0 8px 24px #0006;
+}
+
+body.user-page .pdetail-cover img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+body.user-page .pdetail-meta {
+    gap: 9px;
+    min-width: 0;
+}
+
+body.user-page .pdetail-type {
+    color: white;
+    font-size: 12px;
+    font-weight: 750;
+}
+
+body.user-page .pdetail-meta h1 {
+    margin: 0;
+
+    color: white;
+
+    font-size: clamp(24px, 2.7vw, 42px);
+    font-weight: 900;
+
+    letter-spacing: -1px;
+    line-height: 1.05;
+
+    overflow-wrap: break-word;
+    text-wrap: balance;
+}
+
+body.user-page .pdetail-ownerline {
+    gap: 5px;
+    color: #ededed;
+
+    font-size: 11px;
+}
+
+body.user-page .pdetail-ownerline strong {
+    color: white;
+    font-weight: 800;
+}
+
+body.user-page .pdetail-description {
+    margin: 2px 0 0;
+
+    color: #e0e0e0;
+
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+body.user-page .pdetail-avatar {
+    flex-shrink: 0;
+}
+
+/* ================================================
+   6. BOTONES Y BARRA DE PLAYLIST
+================================================ */
+
+body.user-page .pdetail-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 25;
+
+    min-height: 84px;
+
+    gap: 16px;
+    padding: 17px 22px;
+
+    background: linear-gradient(
+        180deg,
+        #39202b,
+        #21141c
+    );
+}
+
+body.user-page .pdetail-play-btn {
+    display: grid;
+    place-items: center;
+
+    width: 49px;
+    height: 49px;
+
+    flex-shrink: 0;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: #1ed760;
+    color: #000;
+
+    font-size: 23px;
+
+    cursor: pointer;
+
+    transition:
+        transform .18s ease,
+        background .18s ease;
+}
+
+body.user-page .pdetail-play-btn:hover {
+    transform: scale(1.07);
+    background: #3be477;
+}
+
+body.user-page .pdetail-small-cover {
+    width: 33px;
+    height: 36px;
+
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+body.user-page .pdetail-tool-btn {
+    color: #b3b3b3;
+    text-decoration: none;
+    transition:
+        color .15s ease,
+        transform .15s ease;
+}
+
+body.user-page .pdetail-tool-btn:hover {
+    color: white;
+    transform: scale(1.05);
+}
+
+body.user-page .pdetail-view-mode {
+    margin-left: auto;
+
+    color: #b3b3b3;
+    font-size: 11px;
+}
+
+/* Acción principal: Añadir canciones */
+
+body.user-page .p24-actions {
+    gap: 10px;
+    padding: 19px 22px;
+
+    background: #191319;
+}
+
+body.user-page .p24-primary {
+    min-height: 37px;
+
+    border-radius: 999px;
+
+    background: #1ed760;
+    color: black;
+}
+
+body.user-page .p24-primary:hover {
+    background: #39e475;
+}
+
+body.user-page .p24-secondary {
+    min-height: 37px;
+    border-radius: 999px;
+}
+
+body.user-page .p24-status {
+    color: #a8a8a8;
+    background: #191319;
+}
+
+/* ================================================
+   7. TABLAS DE CANCIONES
+================================================ */
+
+body.user-page .p24-saved {
+    background: linear-gradient(
+        180deg,
+        #251520 0,
+        #151215 175px,
+        #121212 340px
+    );
+}
+
+body.user-page .p24-saved h2 {
+    color: white;
+    font-size: 21px;
+    font-weight: 800;
+}
+
+body.user-page .p24-hint {
+    color: #aaa;
+    font-size: 11px;
+}
+
+body.user-page .pdetail-table-head {
+    min-height: 37px;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid #ffffff22;
+
+    color: #a7a7a7;
+
+    font-size: 11px;
+    font-weight: 400;
+}
+
+body.user-page .p24-saved .pdetail-table-head {
+    background: #20161d;
+}
+
+body.user-page .pdetail-track-row {
+    border-radius: 4px;
+    transition: background .14s ease;
+}
+
+body.user-page .pdetail-track-row:hover {
+    background: #ffffff19;
+}
+
+body.user-page .pdetail-track-number {
+    color: #b3b3b3;
+}
+
+body.user-page .pdetail-track-title {
+    color: white;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+body.user-page .pdetail-track-artist,
+body.user-page .pdetail-track-album,
+body.user-page .pdetail-track-date,
+body.user-page .pdetail-track-duration {
+    color: #a7a7a7;
+    font-size: 11px;
+}
+
+body.user-page .pdetail-track-main:hover
+.pdetail-track-title {
+    text-decoration: underline;
+}
+
+body.user-page .p24-icon {
+    background: linear-gradient(
+        135deg,
+        #166a55,
+        #21483e
+    );
+
+    color: #1ed760;
+    border-radius: 4px;
+}
+
+body.user-page .p24-like,
+body.user-page .p24-more {
+    transition:
+        color .14s ease,
+        transform .14s ease,
+        background .14s ease;
+}
+
+body.user-page .p24-like:hover {
+    color: white;
+    transform: scale(1.1);
+}
+
+body.user-page .p24-like.is-liked {
+    color: #1ed760;
+}
+
+body.user-page .p24-more:hover {
+    background: #ffffff25;
+    color: white;
+}
+
+/* ================================================
+   8. MENÚ DE TRES PUNTOS
+================================================ */
+
+body.user-page .p24-menu,
+body.user-page .p24-submenu {
+    background: #282828;
+    color: white;
+
+    border: 1px solid #3b3b3b;
+    border-radius: 5px;
+
+    box-shadow:
+        0 12px 35px #000b,
+        0 1px 5px #0007;
+
+    scrollbar-width: thin;
+    scrollbar-color: #666 transparent;
+}
+
+body.user-page .p24-menu-btn {
+    min-height: 40px;
+    padding: 10px 11px;
+
+    color: #ededed;
+    font-size: 12px;
+}
+
+body.user-page .p24-menu-btn:hover {
+    color: white;
+    background: #414141;
+}
+
+body.user-page .p24-menu-btn.is-selected {
+    color: #1ed760;
+}
+
+body.user-page .p24-menu-icon {
+    color: #bdbdbd;
+}
+
+body.user-page .p24-menu-heading {
+    padding: 10px;
+    font-size: 12px;
+}
+
+body.user-page .p24-menu-search {
+    background: #3c3c3c;
+    border: 1px solid #525252;
+
+    color: white;
+
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+body.user-page .p24-menu-search:focus {
+    border-color: #fff;
+}
+
+body.user-page .p24-menu-divider {
+    background: #ffffff20;
+}
+
+/* ================================================
+   9. PANEL DERECHO
+================================================ */
+
+body.user-page .u-details {
+    color: white;
+}
+
+body.user-page .u-details-header {
+    min-height: 48px;
+    color: white;
+}
+
+body.user-page .u-details-header strong {
+    font-size: 12px;
+    font-weight: 800;
+}
+
+body.user-page .u-details-art {
+    overflow: hidden;
+
+    border-radius: 7px;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    box-shadow: 0 6px 18px #0004;
+}
+
+body.user-page .u-details h2 {
+    color: white;
+
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -.4px;
+
+    overflow-wrap: anywhere;
+}
+
+body.user-page .u-details > p {
+    color: #b3b3b3;
+    font-size: 12px;
+}
+
+body.user-page .u-detail-box {
+    background: #232323;
+
+    border: 0;
+    border-radius: 8px;
+
+    padding: 16px;
+
+    color: white;
+}
+
+body.user-page .u-detail-box h3 {
+    margin-top: 0;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+body.user-page .u-detail-box p {
+    color: #bdbdbd;
+
+    font-size: 11px;
+    line-height: 1.65;
+}
+
+/* ================================================
+   10. REPRODUCTOR INFERIOR
+================================================ */
+
+body.user-page .u-player {
+    background: #000;
+
+    color: white;
+    border-top: 1px solid #ffffff10;
+}
+
+body.user-page .u-player-cover {
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+body.user-page .u-player-song-info {
+    min-width: 0;
+}
+
+body.user-page #playerTitle {
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+body.user-page #playerArtist {
+    color: #b3b3b3;
+    font-size: 10px;
+}
+
+body.user-page .u-player-controls {
+    gap: 15px;
+}
+
+body.user-page .u-player-controls button {
+    cursor: pointer;
+    transition:
+        transform .15s ease,
+        color .15s ease;
+}
+
+body.user-page .u-player-controls button:hover {
+    transform: scale(1.09);
+}
+
+body.user-page .u-player-controls .u-play {
+    display: grid;
+    place-items: center;
+
+    width: 32px;
+    height: 32px;
+
+    flex-shrink: 0;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: white;
+    color: #000;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+body.user-page .u-player-controls .u-play:hover {
+    background: white;
+}
+
+body.user-page .u-player-controls button.is-active {
+    color: #1ed760;
+}
+
+body.user-page .u-progress {
+    color: #b3b3b3;
+    font-size: 10px;
+}
+
+body.user-page input[type="range"] {
+    accent-color: #1ed760;
+    cursor: pointer;
+}
+
+body.user-page .u-player-right {
+    color: #b3b3b3;
+}
+
+body.user-page .u-player-right button {
+    color: inherit;
+    cursor: pointer;
+}
+
+body.user-page .u-player-right button:hover {
+    color: white;
+}
+
+/* ================================================
+   11. PIE DE PÁGINA
+================================================ */
+
+body.user-page .pdetail-footer {
+    background: #121212;
+}
+
+body.user-page .pdetail-footer-grid h4 {
+    color: white;
+    font-size: 12px;
+}
+
+body.user-page .pdetail-footer-grid a {
+    color: #b3b3b3;
+    transition: color .15s ease;
+}
+
+body.user-page .pdetail-footer-grid a:hover {
+    color: white;
+}
+
+body.user-page .pdetail-footer-bottom {
+    color: #999;
+}
+
+/* ================================================
+   12. AJUSTES EN PANTALLAS PEQUEÑAS
+================================================ */
+
+@media (max-width: 1150px) {
+    body.user-page .pdetail-hero {
+        gap: 16px;
+        padding: 23px 17px;
+    }
+
+    body.user-page .pdetail-cover {
+        width: 158px;
+        height: 158px;
+        min-width: 158px;
+    }
+
+    body.user-page .pdetail-meta h1 {
+        font-size: clamp(22px, 2.5vw, 32px);
+    }
+
+    body.user-page .pdetail-toolbar {
+        padding: 15px 18px;
+    }
+}
+
+@media (max-width: 850px) {
+    body.user-page .pdetail-hero {
+        min-height: 220px;
+        gap: 14px;
+    }
+
+    body.user-page .pdetail-cover {
+        width: 130px;
+        height: 130px;
+        min-width: 130px;
+    }
+
+    body.user-page .pdetail-meta h1 {
+        font-size: 24px;
+    }
+
+    body.user-page .p24-saved {
+        padding: 15px;
+    }
+
+    body.user-page .u-music-grid {
+        gap: 8px;
+    }
+}
+
+@media (max-width: 640px) {
+    body.user-page #addSongButton {
+        min-width: 35px;
+        width: 35px;
+        padding: 0;
+    }
+
+    body.user-page #addSongButton::after {
+        display: none;
+    }
+
+    body.user-page .pdetail-hero {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    body.user-page .pdetail-meta h1 {
+        font-size: 25px;
+    }
+
+    body.user-page .pdetail-toolbar {
+        gap: 10px;
+    }
+}
+
+/* ================================================
+   13. ACCESIBILIDAD
+================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    body.user-page .u-lib-item,
+    body.user-page .u-music-card,
+    body.user-page .u-quick-item,
+    body.user-page .p24-menu-btn,
+    body.user-page .pdetail-play-btn {
+        transition: none;
+    }
+}

@@ -1,0 +1,69 @@
+/* Bloque J · Pulido final de navegación, mezclas y accesibilidad. */
+body.user-page .u-music-card.sn-i-mix-card {
+    text-decoration:none; color:inherit; display:flex; flex-direction:column;
+}
+body.user-page .sn-mix-all-link { font-size:13px; color:#b3b3b3; font-weight:700; }
+body.user-page .sn-mix-all-link:hover { color:#fff; text-decoration:underline; }
+body.user-page :is(a,button,input,select,textarea):focus-visible {
+    outline:2px solid #1ed760; outline-offset:3px;
+}
+body.user-page .sn-j-mix-page { background:#151114; color:#fff; min-height:100%; }
+body.user-page .sn-j-mix-hero { display:flex; align-items:end; gap:25px; padding:40px 30px 27px;
+    background:linear-gradient(140deg,#53356d 0%,#252038 75%); min-width:0; }
+body.user-page .sn-j-mix-cover { width:clamp(132px,22vw,235px); aspect-ratio:1; height:auto; object-fit:cover;
+    box-shadow:0 12px 34px #0008; flex-shrink:0; border-radius:5px; }
+body.user-page .sn-j-mix-meta {min-width:0;}
+body.user-page .sn-j-mix-meta > span {font-size:12px;font-weight:800;letter-spacing:.09em;}
+body.user-page .sn-j-mix-meta h1 {font-size:clamp(30px,4.5vw,64px);line-height:1.06;margin:12px 0;overflow-wrap:anywhere;}
+body.user-page .sn-j-mix-meta p {font-size:15px;color:#ded8e5;line-height:1.5;margin:12px 0;}
+body.user-page .sn-j-mix-meta small {font-size:13px;font-weight:700;}
+body.user-page .sn-j-mix-actions {display:flex;gap:12px;flex-wrap:wrap;padding:21px 27px;
+    background:linear-gradient(#261c2a,#191419);align-items:center;}
+body.user-page .sn-j-primary,body.user-page .sn-j-secondary {border:1px solid #686068;background:transparent;
+    border-radius:25px;padding:12px 17px;color:white;font-size:14px;font-weight:700;display:inline-flex;align-items:center;
+    justify-content:center;min-height:44px;text-decoration:none;}
+body.user-page .sn-j-primary {color:#03170a;background:#1ed760;border-color:#1ed760;}
+body.user-page .sn-j-primary:hover {background:#38e676;transform:scale(1.02);}
+body.user-page .sn-j-secondary:hover {border-color:#eee;background:#29232a;}
+body.user-page .sn-j-mix-body {padding:20px 26px 70px;min-width:0;}
+body.user-page .sn-j-mix-label {display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:16px;}
+body.user-page .sn-j-mix-label h2 {font-size:22px;margin:0;}
+body.user-page #snMixState {color:#b3b3b3;font-size:13px;}
+body.user-page .sn-j-songs {display:flex; flex-direction:column;gap:4px;}
+body.user-page .sn-j-song {display:grid;grid-template-columns:28px 48px minmax(0,1fr) 41px 41px;
+    gap:13px;align-items:center;padding:9px 12px;border-radius:6px;min-width:0;}
+body.user-page .sn-j-song:hover {background:#282528;}
+body.user-page .sn-j-song-index {color:#b3b3b3;text-align:center;}
+body.user-page .sn-j-song-cover {display:grid;place-items:center;color:#1ed760;background:#185441;
+    border-radius:5px;width:46px;height:46px;overflow:hidden;}
+body.user-page .sn-j-song-cover img {width:100%;height:100%;object-fit:cover;}
+body.user-page .sn-j-song-info {display:flex;flex-direction:column;gap:5px;min-width:0;}
+body.user-page .sn-j-song-info strong,body.user-page .sn-j-song-info small {white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
+body.user-page .sn-j-song-info strong {font-size:14px;}
+body.user-page .sn-j-song-info small {color:#b3b3b3;font-size:12px;}
+body.user-page .sn-j-song-play,body.user-page .sn-j-song-queue {background:transparent;border:0;color:#c5c5c5;
+    font-size:20px;border-radius:50%;min-width:35px;height:35px;}
+body.user-page .sn-j-song-play:hover,body.user-page .sn-j-song-queue:hover {color:#1ed760;background:#383438;}
+body.user-page .sn-j-mix-empty {padding:30px;background:#242124;border-radius:10px;text-align:center;color:#ddd;line-height:1.6;}
+body.user-page .sn-j-footnote {font-size:12px;color:#b3b3b3;margin:24px 0;line-height:1.5;}
+body.user-page .sn-j-shortcut-hint {font-size:12px;color:#b3b3b3;}
+body.user-page .sn-j-player-toast {position:fixed;z-index:2000;bottom:88px;left:50%;transform:translateX(-50%);
+    padding:8px 14px;border-radius:10px;background:#252525;border:1px solid #555;box-shadow:0 9px 30px #000b;
+    font-size:12px;color:white;pointer-events:none;}
+@media(max-width:710px){
+ body.user-page .sn-j-mix-hero {padding:25px 15px;gap:15px;align-items:center;}
+ body.user-page .sn-j-mix-cover {width:108px;}
+ body.user-page .sn-j-mix-meta h1 {font-size:26px;}
+ body.user-page .sn-j-mix-meta p {font-size:12px;}
+ body.user-page .sn-j-mix-actions {padding:14px;gap:8px;}
+ body.user-page .sn-j-mix-body {padding:18px 12px 45px;}
+ body.user-page .sn-j-song {grid-template-columns:19px 40px minmax(0,1fr) 35px 35px;gap:6px;padding:6px 3px;}
+ body.user-page .sn-j-song-cover {width:39px;height:39px;}
+}
+@media(max-width:430px){
+ body.user-page .sn-j-mix-hero {flex-direction:column;align-items:start;}
+ body.user-page .sn-j-mix-cover {width:136px;}
+}
+@media(prefers-reduced-motion:reduce){
+ body.user-page .sn-j-primary:hover{transform:none;}
+}

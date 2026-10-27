@@ -1,0 +1,286 @@
+/* ================================================================
+   SpotifyNet · Adaptación de interfaz (27/10/2026)
+   Cargado al final para complementar los estilos existentes.
+   No altera reproducción, datos ni botones de las playlists.
+   ================================================================ */
+
+body.user-page,
+body.user-page #userApp { min-width: 0; }
+body.user-page #userApp { width: 100%; overflow: hidden; }
+body.user-page #userApp .u-workspace { min-width: 0; }
+body.user-page #userApp .u-main { min-width: 0; overflow-x: hidden; }
+body.user-page #userApp .u-library,
+body.user-page #userApp .u-details { min-width: 0; }
+body.user-page #userApp .u-header-center,
+body.user-page #userApp .u-header-right { min-width: 0; }
+body.user-page #userApp .u-search { max-width: 100%; }
+body.user-page #userApp .u-avatar { flex-shrink: 0; }
+body.user-page #userApp .u-profile-menu { max-width: calc(100vw - 16px); }
+body.user-page #userApp .u-section-head { min-width: 0; }
+body.user-page #userApp .u-section-head h2 { overflow-wrap: anywhere; }
+body.user-page #userApp .u-section-head .sn-e-show-all { flex-shrink: 0; }
+body.user-page #userApp .u-home-content { min-width: 0; }
+body.user-page #userApp .u-quick-item { min-width: 0; }
+body.user-page #userApp .u-music-section.sn-e-expanded .u-music-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(135px, 100%), 1fr));
+  max-width: 100%;
+}
+body.user-page #userApp .u-player-track,
+body.user-page #userApp .u-player-center,
+body.user-page #userApp .u-player-right { min-width: 0; }
+body.user-page #userApp .u-player-song-info { min-width: 0; }
+body.user-page #userApp .pdetail-page,
+body.user-page #userApp .sn-catalog,
+body.user-page #userApp .sc-page { min-width: 0; max-width: 100%; }
+body.user-page #userApp .pdetail-meta h1 { overflow-wrap: anywhere; }
+body.user-page #userApp .pdetail-hero,
+body.user-page #userApp .pdetail-toolbar { max-width: 100%; }
+body.user-page #userApp .pb-tools { max-width: 100%; }
+body.user-page #userApp .pb-order-wrap { min-width: 0; }
+body.user-page #userApp .pb-order-wrap select { max-width: 100%; }
+
+/* Escritorio grande: las columnas acompañan a la ventana. */
+@media (min-width: 1251px) {
+  body.user-page #userApp .u-workspace {
+    grid-template-columns: clamp(255px, 23vw, 390px) minmax(0, 1fr) clamp(250px, 22vw, 370px);
+  }
+  body.user-page #userApp.is-library-collapsed .u-workspace {
+    grid-template-columns: 70px minmax(0, 1fr) clamp(250px, 22vw, 370px);
+  }
+  body.user-page #userApp.is-details-hidden .u-workspace {
+    grid-template-columns: clamp(255px, 23vw, 390px) minmax(0, 1fr);
+  }
+  body.user-page #userApp.is-library-collapsed.is-details-hidden .u-workspace {
+    grid-template-columns: 70px minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 1600px) and (min-width: 1101px) {
+  body.user-page #userApp .u-quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body.user-page #userApp .u-home-content { padding-inline: clamp(15px, 2vw, 26px); }
+}
+
+/* A 1250 px o menos, el panel derecho pasa a ser un cajón superpuesto.
+   Antes se ocultaba sin posibilidad de abrirlo. */
+@media (max-width: 1250px) {
+  body.user-page #userApp .u-workspace,
+  body.user-page #userApp.is-details-hidden .u-workspace {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+  body.user-page #userApp.is-library-collapsed .u-workspace,
+  body.user-page #userApp.is-library-collapsed.is-details-hidden .u-workspace {
+    grid-template-columns: 70px minmax(0, 1fr);
+  }
+  body.user-page #userApp .u-details { display: none !important; }
+  body.user-page #userApp.is-details-open .u-details {
+    position: fixed;
+    display: block !important;
+    z-index: 980;
+    top: 70px;
+    bottom: 85px;
+    right: 8px;
+    width: min(380px, calc(100vw - 18px));
+    max-height: none;
+    overflow-y: auto;
+    border: 1px solid #454545;
+    border-radius: 10px;
+    background: #121212;
+    box-shadow: 0 16px 50px #000d;
+  }
+  body.user-page #userApp #toggleDetails { display: inline-flex !important; }
+  body.user-page #userApp.is-details-open #toggleDetails { color: #1ed760; }
+  body.user-page #userApp .u-player-right { display: flex !important; }
+}
+
+/* Panel oscuro detrás de biblioteca o información abiertos. */
+body.user-page .sn-r-backdrop {
+  position: fixed;
+  z-index: 900;
+  top: 64px;
+  right: 0;
+  bottom: 78px;
+  left: 0;
+  border: 0;
+  background: rgba(0,0,0,.62);
+  cursor: default;
+}
+body.user-page .sn-r-backdrop[hidden] { display: none !important; }
+
+/* Escritorio estrecho / mitad de pantalla: biblioteca automática en iconos.
+   El botón ☷ abre una biblioteca completa encima del contenido. */
+@media (max-width: 1100px) {
+  body.user-page #userApp .u-workspace,
+  body.user-page #userApp.is-library-collapsed .u-workspace,
+  body.user-page #userApp.is-details-hidden .u-workspace,
+  body.user-page #userApp.is-library-collapsed.is-details-hidden .u-workspace {
+    grid-template-columns: 70px minmax(0, 1fr);
+    gap: 6px;
+    padding-inline: 6px;
+  }
+  body.user-page #userApp:not(.is-library-mobile-open) .u-lib-label,
+  body.user-page #userApp:not(.is-library-mobile-open) .u-lib-copy,
+  body.user-page #userApp:not(.is-library-mobile-open) .u-library-filters,
+  body.user-page #userApp:not(.is-library-mobile-open) .sn-e-filter-shell,
+  body.user-page #userApp:not(.is-library-mobile-open) .u-lib-search-row {
+    display: none !important;
+  }
+  body.user-page #userApp:not(.is-library-mobile-open) .u-library-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 3px;
+  }
+  body.user-page #userApp:not(.is-library-mobile-open) .u-lib-item {
+    justify-content: center;
+    padding-inline: 2px;
+  }
+  body.user-page #userApp:not(.is-library-mobile-open) .u-library-items { padding-inline: 4px; }
+  body.user-page #userApp:not(.is-library-mobile-open) #addSongButton {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    padding: 0 !important;
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 38px !important;
+    border-radius: 50%;
+  }
+  body.user-page #userApp:not(.is-library-mobile-open) #addSongButton::after { display: none !important; content: none !important; }
+  body.user-page #userApp.is-library-mobile-open .u-library {
+    position: relative;
+    z-index: 980;
+    width: min(340px, calc(100vw - 24px));
+    background: #121212;
+    border: 1px solid #444;
+    box-shadow: 14px 0 40px #000b;
+  }
+  body.user-page #userApp.is-library-mobile-open .u-library-header {
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    padding: 15px 13px !important;
+    gap: 10px !important;
+  }
+  body.user-page #userApp.is-library-mobile-open .u-lib-label {
+    display: block !important;
+    flex: 1;
+  }
+  body.user-page #userApp.is-library-mobile-open .sn-e-filter-shell,
+  body.user-page #userApp.is-library-mobile-open .u-lib-search-row { display: flex !important; }
+  body.user-page #userApp.is-library-mobile-open .u-library-filters { display: flex !important; }
+  body.user-page #userApp.is-library-mobile-open .u-lib-copy { display: flex !important; }
+  body.user-page #userApp.is-library-mobile-open .u-lib-item {
+    justify-content: flex-start !important;
+    padding-inline: 8px !important;
+  }
+  body.user-page #userApp.is-library-mobile-open #addSongButton {
+    display: inline-flex !important;
+    flex: none !important;
+    width: auto !important;
+    min-width: 76px !important;
+    max-width: none !important;
+    padding: 0 11px !important;
+    height: 35px !important;
+    border-radius: 20px;
+  }
+  body.user-page #userApp.is-library-mobile-open #addSongButton::after {
+    content: "Crear" !important;
+    display: inline !important;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  body.user-page #userApp.is-library-mobile-open .u-library-items { padding-inline: 8px !important; }
+  body.user-page #userApp.is-library-mobile-open #toggleLibrary { flex: none; }
+  body.user-page #userApp .u-quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body.user-page #userApp .u-home-content { padding-inline: 14px; }
+  body.user-page #userApp .u-header { grid-template-columns: 38px minmax(0, 1fr) auto; gap: 8px; }
+  body.user-page #userApp .u-search { width: min(100%, 450px); flex: 1; }
+  body.user-page #userApp .u-header-center { width: 100%; }
+  body.user-page #userApp .u-account-name { display: none; }
+}
+
+@media (max-width: 760px) {
+  body.user-page #userApp { grid-template-rows: 58px minmax(0,1fr) 122px; }
+  body.user-page #userApp .u-workspace,
+  body.user-page #userApp.is-library-collapsed .u-workspace,
+  body.user-page #userApp.is-details-hidden .u-workspace,
+  body.user-page #userApp.is-library-collapsed.is-details-hidden .u-workspace {
+    grid-template-columns: 58px minmax(0,1fr);
+    gap: 4px;
+    padding: 0 4px 4px;
+  }
+  body.user-page #userApp .u-header { padding-inline: 5px; grid-template-columns: 30px minmax(0,1fr) auto; gap: 5px; }
+  body.user-page #userApp .u-logo { width: 28px; }
+  body.user-page #userApp .u-search { min-width: 0; padding-inline: 9px; }
+  body.user-page #userApp .u-search input { font-size: 12px; }
+  body.user-page #userApp .u-header-center { gap: 5px; }
+  body.user-page #userApp .u-home-button { flex: none; width: 36px; height: 36px; }
+  body.user-page #userApp .u-header-right { gap: 2px; }
+  body.user-page #userApp .sn-catalog-link { display: none; }
+  body.user-page #userApp .u-avatar { width: 30px; height: 30px; border-width: 4px; }
+  body.user-page #userApp .u-home-content { padding: 13px 10px 35px; }
+  body.user-page #userApp .u-category-tabs { gap: 5px; }
+  body.user-page #userApp .u-category { padding: 7px 11px; }
+  body.user-page #userApp .u-quick-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 6px; }
+  body.user-page #userApp .u-quick-item { height: 51px; }
+  body.user-page #userApp .u-quick-cover { width: 51px; height: 51px; }
+  body.user-page #userApp .u-music-grid { grid-auto-columns: clamp(118px, 35vw, 152px); }
+  body.user-page #userApp .u-music-section.sn-e-expanded .u-music-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  body.user-page #userApp .u-section-head h2 { font-size: 18px; }
+  body.user-page #userApp .u-details { top: 63px !important; bottom: 127px !important; }
+  body.user-page .sn-r-backdrop { top: 58px; bottom: 122px; }
+  body.user-page #userApp .u-player {
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) auto !important;
+    grid-template-rows: 43px minmax(0,1fr);
+    gap: 2px 7px;
+    padding: 5px 9px 7px;
+    align-items: center;
+  }
+  body.user-page #userApp .u-player-track { grid-column: 1; grid-row: 1; overflow: hidden; }
+  body.user-page #userApp .u-player-cover { width: 38px; height: 38px; font-size: 24px; }
+  body.user-page #userApp .u-player-song-info strong { font-size: 11px; }
+  body.user-page #userApp .u-player-song-info small { font-size: 10px; }
+  body.user-page #userApp .u-player-center { grid-column: 1 / -1; grid-row: 2; width: 100%; gap: 5px; }
+  body.user-page #userApp .u-player-controls { gap: clamp(12px,5vw,24px); }
+  body.user-page #userApp .u-player-controls button { padding: 3px; }
+  body.user-page #userApp .u-player-controls .u-play { width: 34px; height: 34px; }
+  body.user-page #userApp .u-player-right { grid-column: 2; grid-row: 1; display: flex !important; justify-content: flex-end; gap: 6px; }
+  body.user-page #userApp .u-player-right button { min-width: 30px; min-height: 30px; font-size: 20px; }
+  body.user-page #userApp .u-player-right input { display: none; }
+  body.user-page #userApp .u-progress { gap: 5px; }
+  body.user-page #userApp .pdetail-hero { gap: 10px; padding: 18px 12px; min-height: 0; }
+  body.user-page #userApp .pdetail-cover { width: 105px; height: 105px; min-width: 105px; }
+  body.user-page #userApp .pdetail-meta h1 { font-size: clamp(20px,5vw,27px); }
+  body.user-page #userApp .pdetail-toolbar { gap: 9px; padding-inline: 12px; }
+  body.user-page #userApp .pdetail-view-mode { margin-left: auto; }
+  body.user-page #userApp .pb-tools { align-items: stretch; }
+  body.user-page #userApp .pb-order-wrap { width: 100%; justify-content: space-between; }
+  body.user-page #userApp .pb-search-wrap { width: 100%; }
+  body.user-page #userApp .sn-cat-hero { padding: 22px 12px; }
+  body.user-page #userApp .sn-cat-toolbar { padding: 12px; }
+  body.user-page #userApp .sc-page { padding: 15px 10px 25px; }
+  body.user-page #userApp .sc-public-header { padding: 12px; }
+  body.user-page #userApp .sc-management { margin-inline: 10px; padding: 12px; }
+  body.user-page .sn-queue-panel { bottom: 128px; max-height: min(60vh, 570px); }
+}
+
+@media (max-width: 420px) {
+  body.user-page #userApp .u-search-end { display: none; }
+  body.user-page #userApp .u-home-button { width: 32px; height: 32px; }
+  body.user-page #userApp .u-quick-grid { grid-template-columns: 1fr; }
+  body.user-page #userApp .u-quick-item { height: 44px; }
+  body.user-page #userApp .u-quick-cover { height: 44px; width: 44px; }
+  body.user-page #userApp .u-home-content { padding-inline: 8px; }
+  body.user-page #userApp .u-music-section.sn-e-expanded .u-music-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+  body.user-page #userApp .u-player-right { gap: 0; }
+  body.user-page #userApp .u-player-right>span { display: none; }
+  body.user-page #userApp .pdetail-cover { width: 84px; height: 84px; min-width: 84px; }
+  body.user-page #userApp .u-section-head h2 { font-size: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.user-page #userApp .u-library,
+  body.user-page #userApp .u-details { transition: none; }
+}

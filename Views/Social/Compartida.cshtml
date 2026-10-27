@@ -1,0 +1,41 @@
+@model SpotifyNet.Models.SocialSharedViewModel
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewData["Title"] = Model.Name;
+}
+<section class="sc-page sc-shared" data-share-token="@Model.Token">
+    <div class="sc-top"><span class="sc-kicker">@(Model.IsPublic ? "PLAYLIST PÚBLICA" : "PLAYLIST PARA COLABORADORES")</span>
+        <h1>@Model.Name</h1><p>@Model.Description</p>
+        <a href="/Social/Perfil?id=@Uri.EscapeDataString(Model.OwnerId)">Creada por @Model.OwnerName</a>
+        <div class="sc-actions"><button type="button" class="sc-green" id="scPlayAll">▶ Reproducir lista</button>
+            @if (Model.IsOwner) { <a class="sc-button" href="/Social/MiEspacio">Gestionar privacidad</a> }
+        </div>
+        <img class="sc-cover" src="/Social/Portada?token=@Model.Token" alt="Portada de @Model.Name" onerror="this.style.display='none'" />
+    </div>
+    <h2>Canciones compartidas (@Model.Songs.Count)</h2>
+    @if (Model.Songs.Count == 0) { <p class="sc-muted">Aún no hay canciones en esta playlist.</p> }
+    <div class="sc-list" id="scSharedSongs">
+    @foreach (var song in Model.Songs) {
+        <button type="button" class="sc-song" data-track-id="@song.Id" data-track-name="@song.Title" data-track-artist="@song.Artist">
+            <span>♫</span><span><strong>@song.Title</strong><small>@song.Artist</small></span><span class="sc-arrow">▶</span>
+        </button>
+    }
+    </div>
+    @if (Model.CanContribute) {
+        <section class="sc-add"><h2>Añadir canciones de mi biblioteca</h2>
+            <p class="sc-muted">Puedes contribuir con canciones que ya hayas subido a tu cuenta. El MP3 no se duplica.</p>
+            @if (Model.AvailableSongs.Count == 0) { <p class="sc-muted">No tienes canciones nuevas para añadir. Puedes subirlas primero a CANO o a tu playlist personal.</p> }
+            else {
+                <form method="post" asp-controller="Social" asp-action="AgregarCancion">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="token" value="@Model.Token" />
+                    <select name="cancionId" aria-label="Seleccionar una canción" required>
+                        @foreach (var track in Model.AvailableSongs) { <option value="@track.Id">@track.Title</option> }
+                    </select>
+                    <button type="submit" class="sc-green">Añadir a la playlist</button>
+                </form>
+            }
+        </section>
+    }
+    <p class="sc-muted">Las canciones de esta sección son archivos aportados por usuarios de SpotifyNet, no el catálogo oficial de Spotify.</p>
+</section>

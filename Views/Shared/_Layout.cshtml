@@ -1,0 +1,169 @@
+﻿
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SpotifyNet</title>
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+</head>
+<body>
+<div class="page-shell">
+
+    <header class="top-header">
+        <div class="top-left">
+            <a href="/" class="brand-circle" title="SpotifyNet">♫</a>
+
+            <a href="/" class="icon-btn">⌂</a>
+
+            <div class="search-box">
+                <span class="search-icon">⌕</span>
+                <input type="search"
+                       placeholder="¿Qué quieres reproducir?"
+                       aria-label="Buscar música" />
+                <span class="search-right">▣</span>
+            </div>
+        </div>
+
+        <div class="top-right">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <span class="signup-link">
+                    @(User.Identity?.Name)
+                </span>
+
+                <form asp-controller="Cuenta"
+                      asp-action="CerrarSesion"
+                      method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit"
+                            class="login-btn"
+                            style="border:0;cursor:pointer;">
+                        Cerrar sesión
+                    </button>
+                </form>
+            }
+            else
+            {
+                <a href="#" class="top-link">Premium</a>
+                <a href="#" class="top-link">Ayuda</a>
+                <a href="#" class="top-link">Descargar</a>
+
+                <span class="divider"></span>
+
+                <span class="install-link">
+                    ⭳ Instalar aplicación
+                </span>
+
+                <a asp-controller="Cuenta"
+                   asp-action="Registrarse"
+                   class="signup-link">
+                    Regístrate
+                </a>
+
+                <a asp-controller="Cuenta"
+                   asp-action="IniciarSesion"
+                   class="login-btn">
+                    Iniciar sesión
+                </a>
+            }
+        </div>
+    </header>
+
+    <div class="content-shell">
+
+        <aside class="left-panel">
+
+            <div class="library-header">
+                <h3>Tu biblioteca</h3>
+                <button class="create-btn">＋ Crear</button>
+            </div>
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="panel-card">
+                    <h4>Bienvenido a SpotifyNet</h4>
+                    <p>
+                        Tu cuenta está conectada.
+                        Próximamente podrás crear y
+                        administrar tus playlists.
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="panel-card">
+                    <h4>Crea tu primera playlist</h4>
+                    <p>¡Es muy fácil! Te vamos a ayudar</p>
+                    <a asp-controller="Cuenta"
+                       asp-action="Registrarse"
+                       class="white-btn"
+                       style="display:inline-block;">
+                        Crear playlist
+                    </a>
+                </div>
+
+                <div class="panel-card">
+                    <h4>Busquemos algunos podcasts para seguir</h4>
+                    <p>
+                        Te mantendremos al tanto
+                        de los nuevos episodios.
+                    </p>
+                    <a asp-controller="Cuenta"
+                       asp-action="Registrarse"
+                       class="white-btn"
+                       style="display:inline-block;">
+                        Explorar podcasts
+                    </a>
+                </div>
+            }
+
+            <div class="left-footer">
+                <div class="footer-links">
+                    <a href="#">Legal</a>
+                    <a href="#">Privacidad</a>
+                    <a href="#">Cookies</a>
+                    <a href="#">Accesibilidad</a>
+                </div>
+
+                <span class="lang-btn">
+                    🌐 Español de Latinoamérica
+                </span>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            @RenderBody()
+        </main>
+
+    </div>
+
+    @if (!SignInManager.IsSignedIn(User))
+    {
+        <div class="bottom-banner">
+            <div class="banner-text">
+                <strong>Muestra de SpotifyNet</strong>
+                <span>
+                    Regístrate para descubrir música
+                    y guardar tus canciones favoritas.
+                </span>
+            </div>
+
+            <a asp-controller="Cuenta"
+               asp-action="Registrarse"
+               class="banner-btn">
+                Regístrate gratis
+            </a>
+        </div>
+    }
+
+</div>
+
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

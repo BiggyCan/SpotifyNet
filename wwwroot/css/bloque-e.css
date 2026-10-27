@@ -1,0 +1,129 @@
+/* SpotifyNet Bloque E: pulido visual no destructivo sobre el Bloque D. */
+:root{--sn-e-accent:#1ed760;--sn-e-radius:9px;--sn-e-muted:#b3b3b3}
+.u-header{gap:12px}
+.u-logo{border-radius:50%;transition:transform .15s ease;color:white;text-decoration:none}
+.u-logo:hover{transform:scale(1.07)}
+.u-home-button{font-size:25px;transition:background .15s,transform .15s}
+.u-home-button:hover{background:#353535;transform:scale(1.035)}
+.u-search{transition:border-color .15s,background .15s}
+.u-search:hover{background:#292929;border-color:#444}
+.u-search:focus-within{background:#282828;border-color:#d0d0d0}
+.u-search input{font-size:14px;min-width:0}
+.u-library,.u-main,.u-details{border-radius:var(--sn-e-radius)}
+.u-library-header{gap:9px}
+.u-lib-item{transition:background .14s}
+.u-lib-item:hover{background:#272727}
+.u-lib-item .u-lib-art{flex-shrink:0}
+.u-lib-copy{min-width:0}
+.u-lib-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.u-lib-copy small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+/* Evita que la pestaña Álbumes quede inaccesible al estrechar la biblioteca. */
+.sn-e-filter-shell{display:flex;align-items:center;gap:1px;position:relative;min-width:0}
+.sn-e-filter-shell>.u-library-filters{flex:1;min-width:0;padding-right:3px;scroll-behavior:smooth;scrollbar-width:none}
+.sn-e-filter-shell>.u-library-filters::-webkit-scrollbar{display:none}
+.sn-e-filter-shell .u-library-filter{flex:none;white-space:nowrap}
+.sn-e-filter-next{margin:0 8px 10px 0;flex:0 0 27px;width:27px;height:27px;border:0;border-radius:50%;background:#333;color:white;font-size:24px;line-height:1;cursor:pointer;box-shadow:-7px 0 12px #1212128a}
+.sn-e-filter-next:hover{background:#505050}
+.u-app.is-library-collapsed .sn-e-filter-shell{display:none}
+.u-category-tabs{overflow-x:auto;scrollbar-width:none;max-width:100%}
+.u-category-tabs::-webkit-scrollbar{display:none}
+.u-category-tabs .u-category{white-space:nowrap;flex-shrink:0}
+.u-quick-grid{gap:8px}
+.u-quick-item{border-radius:5px;box-shadow:inset 0 0 0 1px #ffffff06;transition:background .18s,transform .15s}
+.u-quick-item:hover{background:#4d4d4d;transform:translateY(-1px)}
+.u-quick-cover{flex-shrink:0}
+.u-quick-item strong{overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height:1.25;padding-right:8px}
+.u-music-section{min-width:0}
+.u-section-head{gap:14px}
+.u-section-head h2{min-width:0}
+.sn-e-show-all{border:0;background:transparent;color:#b4b4b4;cursor:pointer;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;padding:7px 0}
+.sn-e-show-all:hover{color:white;text-decoration:underline}
+.u-music-grid .u-music-card{border-radius:6px;transition:background .18s,transform .18s}
+.u-music-grid .u-music-card:hover{transform:translateY(-2px);background:#292929}
+.u-music-grid .u-music-card .u-album-art{border-radius:5px;overflow:hidden}
+/* Mostrar todo: botón real que pasa de carrusel a cuadrícula y viceversa. */
+.u-music-section.sn-e-expanded .u-music-grid{display:grid;grid-auto-flow:row;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));grid-auto-columns:unset;overflow:visible;gap:16px}
+.u-music-section.sn-e-expanded .u-music-card{width:auto}
+.u-music-section.sn-e-expanded .u-music-grid::-webkit-scrollbar{display:none}
+/* Barra de progreso, teclado y botones */
+.u-player{border-top:1px solid #141414}
+.u-player-controls button,.u-player-right button{cursor:pointer;transition:transform .13s,color .13s}
+.u-player-controls button:hover:not(:disabled){transform:scale(1.08)}
+.u-player-controls .u-play:hover:not(:disabled){background:#fff;transform:scale(1.09)}
+.u-progress input,.u-player-right input{accent-color:var(--sn-e-accent)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #fff;outline-offset:2px}
+/* Catálogo: presentación de artista / álbum con portada del primer tema. */
+.sn-catalog{min-width:0}
+.sn-cat-hero{background:linear-gradient(128deg,#473371 0%,#272437 56%,#18171d 100%);padding:38px 30px}
+.sn-cat-hero h1{font-weight:850;letter-spacing:-1.2px}
+.sn-cat-toolbar{gap:12px}
+.sn-cat-search input{border-radius:25px;padding-left:16px}
+.sn-cat-section{padding-top:27px;padding-bottom:30px}
+.sn-e-group-heading{display:flex;gap:18px;align-items:center;margin:0 0 20px;min-width:0}
+.sn-e-group-heading .sn-cat-section-heading{display:block;margin:0;min-width:0}
+.sn-e-group-heading .sn-cat-type{display:block;margin:0 0 7px}
+.sn-e-group-heading .sn-cat-section-heading h2{font-size:clamp(22px,2.5vw,32px);margin-bottom:7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sn-e-group-heading .sn-cat-section-heading small{display:block}
+.sn-e-group-art{width:104px;height:104px;flex:none;border-radius:8px;background:linear-gradient(135deg,#5038be,#1c1c27);overflow:hidden;box-shadow:0 10px 24px #0005;display:grid;place-items:center;color:#f5f5f5;font-size:40px}
+.sn-e-group-art.sn-e-is-artist{border-radius:50%}
+.sn-e-group-art img{width:100%;height:100%;object-fit:cover;display:block}
+.sn-e-row-art{width:42px;height:42px;flex:none;overflow:hidden;display:grid;place-items:center;border-radius:5px;background:linear-gradient(130deg,#1b7657,#164736);color:#1ed760;font-size:23px}
+.sn-e-row-art img{width:100%;height:100%;object-fit:cover;display:block}
+.sn-cat-song{padding:9px 12px;gap:11px;min-height:58px}
+.sn-cat-song:hover{background:#262626}
+.sn-cat-play{width:34px;height:34px;min-width:34px;background:#1ed760;box-shadow:0 4px 12px #0005}
+.sn-cat-play:hover{transform:scale(1.08)}
+.sn-cat-song-title{font-size:13px}
+.sn-cat-song-sub{font-size:12px}
+.sn-cat-edit{white-space:nowrap}
+/* Zona de playlist y modal: mejorar legibilidad, sin interferir con su JS. */
+.pdetail-page .pdetail-cover{box-shadow:0 10px 28px #0006}
+.pdetail-page .pdetail-track-row{transition:background .14s ease}
+.pdetail-page .pdetail-track-row:hover{background:#ffffff17}
+.pdetail-page .pdetail-toolbar{backdrop-filter:blur(16px)}
+.pdetail-page .pdetail-track-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pdetail-page .pdetail-track-main{min-width:0}
+.pdetail-page .pdetail-table,.pdetail-page .pdetail-table-body{min-width:0}
+.sn-meta-dialog{max-height:calc(100dvh - 60px);overflow-y:auto}
+/* Ajustes a pantallas de escritorio pequeñas. Mantener paneles contraíbles. */
+@media (max-width:1450px){
+  .u-header{grid-template-columns:1fr minmax(0,auto) 1fr}
+  .u-search{width:min(32vw,400px)}
+  .u-home-content{padding-left:24px;padding-right:24px}
+  .u-quick-item strong{font-size:12px}
+}
+@media (max-width:1250px){
+  .sn-e-show-all{font-size:11px}
+  .sn-cat-section{padding:21px 20px}
+  .sn-catalog-link{font-size:12px}
+}
+@media (max-width:950px){
+  .u-header{grid-template-columns:auto minmax(0,1fr) auto;padding:0 10px;gap:8px}
+  .u-header-center{min-width:0}
+  .u-search{width:100%;flex:1;min-width:0}
+  .u-header-right{gap:7px}
+  .u-account-name{display:none}
+  .sn-e-group-art{width:78px;height:78px}
+  .sn-cat-playlist-link{display:none}
+}
+@media (max-width:720px){
+  .u-logo{width:28px;font-size:25px}
+  .u-home-button{width:35px;height:35px;font-size:22px;flex:none}
+  .u-search{height:38px;padding:0 11px}
+  .u-search-end{display:none}
+  .sn-catalog-link{display:none}
+  .u-home-content{padding:15px 12px 60px}
+  .u-quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .u-quick-item{height:53px}
+  .u-quick-cover{width:52px;height:53px}
+  .u-music-section.sn-e-expanded .u-music-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sn-cat-hero{padding:25px 18px}
+  .sn-cat-toolbar{padding:15px 12px}
+  .sn-cat-section{padding:18px 12px}
+  .sn-cat-song{gap:7px;padding:8px 5px}
+  .sn-e-row-art{width:32px;height:32px;font-size:18px}
+  .sn-cat-play{width:28px;height:28px;min-width:28px}
+  .sn-cat-edit{font-size:0;padding:8px}
+  .sn-cat-edit::before{content:'✎';font-size:17px}
+}
+@media (prefers-reduced-motion:reduce){.u-logo,.u-music-card,.u-quick-item,.u-player button,.sn-cat-play{transition:none!important;scroll-behavior:auto!important}}

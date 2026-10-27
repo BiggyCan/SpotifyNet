@@ -1,0 +1,32 @@
+@model SpotifyNet.Models.SocialDashboardViewModel
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewData["Title"] = "Mi espacio y comunidad";
+}
+<section class="sc-page">
+    <div class="sc-top"><span class="sc-kicker">COMUNIDAD DE SPOTIFYNET</span>
+        <h1>Mi espacio musical</h1>
+        <p>Hola, @Model.DisplayName. Aquí puedes gestionar quién ve tus listas y a cuáles te han invitado.</p>
+        <div class="sc-actions"><a href="/Perfil/Editar" class="sc-button">Editar mi perfil</a>
+            <a href="/Social/Perfil?id=@Model.UserId" class="sc-button">Ver mi perfil público</a></div>
+    </div>
+    <h2>Mis playlists guardadas</h2>
+    @if (Model.Owned.Count == 0) { <p class="sc-muted">Todavía no has guardado canciones ni creado playlists personales.</p> }
+    <div class="sc-list">
+    @foreach (var item in Model.Owned) {
+        <article class="sc-list-item"><div><strong>@item.Name</strong><small>@(item.IsPublic ? "Pública" : "Privada")</small></div>
+            <div class="sc-actions"><a href="@(item.Slug.StartsWith("mi-") ? "/Biblioteca/Playlist?slug=" : "/Home/Playlist?slug=")@Uri.EscapeDataString(item.Slug)" class="sc-button">Abrir y gestionar</a>
+            @if (item.IsPublic && item.Token.Length > 0) { <a class="sc-button" href="/Social/Compartida?token=@item.Token">Enlace público</a> }</div>
+        </article>
+    }
+    </div>
+    <h2>Colaboraciones recibidas</h2>
+    @if (Model.Collaborations.Count == 0) { <p class="sc-muted">Cuando alguien te invite como colaborador, su playlist aparecerá aquí.</p> }
+    <div class="sc-list">
+    @foreach (var item in Model.Collaborations) {
+        <article class="sc-list-item"><div><strong>@item.Name</strong><small>Creada por @item.Owner · Acceso concedido</small></div>
+            <a class="sc-button" href="/Social/Compartida?token=@item.Token">Abrir colaboración</a>
+        </article>
+    }
+    </div>
+</section>

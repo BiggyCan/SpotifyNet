@@ -1,0 +1,1888 @@
+
+@model SpotifyNet.Models.PlaylistDetailViewModel
+
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewData["Title"] = Model.Name;
+
+    string inicial = string.IsNullOrWhiteSpace(Model.Owner)
+        ? "U"
+        : Model.Owner.Substring(0, 1).ToUpperInvariant();
+}
+
+<link rel="stylesheet"
+      href="~/css/playlist.css"
+      asp-append-version="true" />
+<link rel="stylesheet"
+      href="~/css/playlist-avanzada.css"
+      asp-append-version="true" />
+
+<style>
+    /* PASO 24 - CONTROLES DE PLAYLIST */
+
+    .p24-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 20px 22px;
+        background: #191119;
+    }
+
+    .p24-primary,
+    .p24-secondary {
+        font-family: inherit;
+        font-weight: 800;
+        cursor: pointer;
+        transition: transform .12s, background .12s;
+    }
+
+    .p24-primary {
+        padding: 11px 18px;
+        border: 0;
+        border-radius: 24px;
+        background: #1ed760;
+        color: #000;
+        font-size: 13px;
+    }
+
+    .p24-secondary {
+        padding: 10px 15px;
+        border: 1px solid #666;
+        border-radius: 24px;
+        background: transparent;
+        color: white;
+        font-size: 12px;
+    }
+
+    .p24-primary:hover,
+    .p24-secondary:hover {
+        transform: scale(1.03);
+    }
+
+    .p24-danger {
+        border-color: #934242;
+        color: #ffabab;
+    }
+
+    .p24-status {
+        padding: 0 22px 14px;
+        color: #b7b7b7;
+        background: #191119;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .p24-error {
+        color: #ff9999;
+    }
+
+    .p24-saved {
+        padding: 22px;
+        background: linear-gradient(#24121d, #121212 180px);
+    }
+
+    .p24-saved h2 {
+        margin: 0 0 8px;
+        font-size: 20px;
+    }
+
+    .p24-hint {
+        margin: 0 0 17px;
+        font-size: 12px;
+        color: #aaa;
+        line-height: 1.5;
+    }
+
+    .p24-saved .pdetail-table-head,
+    .p24-saved .pdetail-track-row {
+        display: grid;
+        grid-template-columns:
+            24px
+            minmax(170px, 1.6fr)
+            minmax(95px, .8fr)
+            minmax(105px, .8fr)
+            98px;
+        gap: 9px;
+        align-items: center;
+    }
+
+    .p24-saved .pdetail-track-row {
+        min-height: 51px;
+        cursor: default;
+    }
+
+    .p24-saved .pdetail-track-main {
+        cursor: pointer;
+    }
+
+    .p24-saved .pdetail-track-main:hover
+    .pdetail-track-title {
+        text-decoration: underline;
+    }
+
+    .p24-actions-cell {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .p24-like,
+    .p24-more {
+        border: 0;
+        background: transparent;
+        color: #aaa;
+        cursor: pointer;
+        font-family: inherit;
+    }
+
+    .p24-like {
+        padding: 4px;
+        font-size: 20px;
+    }
+
+    .p24-like.is-liked {
+        color: #1ed760;
+    }
+
+    .p24-more {
+        padding: 4px 7px;
+        font-size: 20px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        border-radius: 5px;
+    }
+
+    .p24-like:hover,
+    .p24-more:hover {
+        color: white;
+    }
+
+    .p24-more:hover {
+        background: #ffffff20;
+    }
+
+    .p24-icon {
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        border-radius: 4px;
+        background: #245a4b;
+        color: #1ed760;
+        font-size: 19px;
+    }
+
+    .p24-empty {
+        padding: 26px;
+        text-align: center;
+        border: 1px dashed #444;
+        border-radius: 8px;
+        color: #b5b5b5;
+        font-size: 13px;
+    }
+
+    .p24-demo-label {
+        padding: 15px 0 12px;
+        color: #aaa;
+        font-size: 12px;
+    }
+
+    /* MENU CONTEXTUAL */
+    .p24-menu,
+    .p24-submenu {
+        position: fixed;
+        z-index: 99999;
+        width: 240px;
+        max-height: min(520px, 70vh);
+        overflow: auto;
+        padding: 5px;
+        border: 1px solid #484848;
+        border-radius: 6px;
+        background: #282828;
+        color: #fff;
+        box-shadow: 0 12px 35px rgba(0,0,0,.75);
+        font-family: Arial, sans-serif;
+    }
+
+    .p24-menu[hidden],
+    .p24-submenu[hidden] {
+        display: none !important;
+    }
+
+    .p24-menu-btn {
+        width: 100%;
+        min-height: 39px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 10px 9px;
+        border: 0;
+        border-radius: 3px;
+        background: transparent;
+        color: #eee;
+        text-align: left;
+        font-family: inherit;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .p24-menu-btn:hover,
+    .p24-menu-btn:focus-visible {
+        background: #3e3e3e;
+        outline: none;
+    }
+
+    .p24-menu-icon {
+        display: inline-grid;
+        place-items: center;
+        width: 18px;
+        flex-shrink: 0;
+        color: #b3b3b3;
+        font-size: 17px;
+    }
+
+    .p24-menu-arrow {
+        margin-left: auto;
+        color: #bbb;
+    }
+
+    .p24-menu-divider {
+        height: 1px;
+        margin: 5px 3px;
+        background: #4a4a4a;
+    }
+
+    .p24-menu-heading {
+        padding: 9px 10px;
+        font-size: 12px;
+        font-weight: 750;
+        color: white;
+    }
+
+    .p24-menu-search {
+        display: block;
+        width: calc(100% - 10px);
+        margin: 5px;
+        padding: 10px;
+        border: 1px solid #484848;
+        border-radius: 4px;
+        background: #3a3a3a;
+        color: white;
+        font-family: inherit;
+        font-size: 12px;
+        outline: none;
+    }
+
+    .p24-menu-search:focus {
+        border-color: #a5a5a5;
+    }
+
+    .p24-menu-list {
+        max-height: 310px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #666 #282828;
+    }
+
+    .p24-menu-empty {
+        padding: 13px;
+        color: #aaa;
+        font-size: 12px;
+    }
+
+    .p24-menu-btn.is-selected {
+        color: #1ed760;
+    }
+
+    .p24-mini-notice {
+        padding: 7px;
+        color: #aaa;
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    @@media (max-width: 1050px) {
+        .p24-saved .pdetail-table-head,
+        .p24-saved .pdetail-track-row {
+            grid-template-columns:
+                24px
+                minmax(150px, 1fr)
+                minmax(90px, .7fr)
+                90px;
+        }
+
+        .p24-saved .pdetail-table-head > div:nth-child(4),
+        .p24-saved .pdetail-track-date {
+            display: none;
+        }
+    }
+
+    @@media (max-width: 700px) {
+        .p24-saved {
+            padding: 14px;
+        }
+
+        .p24-actions {
+            padding: 14px;
+        }
+
+        .p24-status {
+            padding: 0 14px 12px;
+        }
+
+        .p24-saved .pdetail-table-head,
+        .p24-saved .pdetail-track-row {
+            grid-template-columns:
+                20px
+                minmax(110px, 1fr)
+                75px;
+        }
+
+        .p24-saved .pdetail-table-head > div:nth-child(3),
+        .p24-saved .pdetail-track-album {
+            display: none;
+        }
+
+        .p24-actions-cell {
+            gap: 0;
+        }
+
+        .p24-menu,
+        .p24-submenu {
+            width: min(245px, calc(100vw - 20px));
+        }
+    }
+</style>
+
+<div class="pdetail-page" id="playlistPage">
+
+    <!-- CABECERA -->
+    <section class="pdetail-hero"
+             style="--hero-color:@Model.BannerColor;">
+
+        <div class="pdetail-cover">
+            <img src="@Url.Content(Model.Cover)"
+                 alt="@Model.Name" />
+        </div>
+
+        <div class="pdetail-meta">
+
+            <div class="pdetail-type">
+                @Model.Type
+            </div>
+
+            <h1>@Model.Name</h1>
+
+            <div class="pdetail-ownerline">
+
+                <span class="pdetail-avatar">
+                    @inicial
+                </span>
+
+                <strong>@Model.Owner</strong>
+
+                @if (!string.IsNullOrWhiteSpace(Model.SavesText))
+                {
+                    <span>• @Model.SavesText</span>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.TrackCountText))
+                {
+                    <span id="playlistRealCount">• @Model.TrackCountText</span>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.DurationText))
+                {
+                    <span>• @Model.DurationText</span>
+                }
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Description))
+            {
+                <p class="pdetail-description">
+                    @Model.Description
+                </p>
+            }
+
+        </div>
+    </section>
+
+    <!-- BARRA DE REPRODUCCION -->
+    <section class="pdetail-toolbar">
+
+        <button type="button"
+                class="pdetail-play-btn"
+                id="playlistPlayAll"
+                title="Reproducir playlist">
+            ▶
+        </button>
+
+        <span class="pdetail-small-cover">
+            <img src="@Url.Content(Model.Cover)"
+                 alt="@Model.Name" />
+        </span>
+
+        <button type="button"
+                class="pdetail-tool-btn"
+                id="playlistRefresh"
+                title="Actualizar canciones">
+            ↻
+        </button>
+
+        <a href="/"
+           class="pdetail-tool-btn"
+           title="Inicio">
+            ⌂
+        </a>
+
+        <div class="pdetail-view-mode">
+            Lista ☰
+        </div>
+
+    </section>
+
+    <!-- ACCIONES -->
+    <section class="p24-actions">
+
+        <button type="button"
+                class="p24-primary"
+                id="playlistAddAudio">
+            + Añadir canciones
+        </button>
+
+        <button type="button"
+                class="p24-secondary"
+                id="playlistRename"
+                hidden>
+            Renombrar playlist
+        </button>
+
+        <button type="button"
+                class="p24-secondary p24-danger"
+                id="playlistDelete"
+                hidden>
+            Eliminar playlist
+        </button>
+
+        <button type="button" class="p24-secondary" id="playlistEditDetails" hidden>
+            <span aria-hidden="true">✎</span> Editar detalles
+        </button>
+        <button type="button" class="p24-secondary" id="playlistChangeCover" hidden>
+            <span aria-hidden="true">▧</span> Cambiar portada
+        </button>
+        <input type="file" id="playlistCoverFile" accept="image/jpeg,image/png,image/webp" hidden />
+
+        <input type="file"
+               id="playlistAudioFiles"
+               accept=".mp3,.wav,.ogg,.m4a,audio/*"
+               multiple
+               hidden />
+
+        <form id="playlistToken" hidden>
+            @Html.AntiForgeryToken()
+        </form>
+
+    </section>
+
+    <div id="playlistStatus"
+         class="p24-status"
+         role="status"
+         aria-live="polite">
+        Cargando canciones...
+    </div>
+
+    <!-- EDITOR DE PLAYLIST: solo para listas del usuario -->
+    <dialog id="playlistEditDialog" class="pb-dialog">
+        <form method="dialog" id="playlistEditForm">
+            <h2>Editar información de la playlist</h2>
+            <label for="playlistEditName">Nombre</label>
+            <input id="playlistEditName" maxlength="100" minlength="2" required />
+            <label for="playlistEditDescription">Descripción</label>
+            <textarea id="playlistEditDescription" maxlength="600" rows="4"
+                placeholder="¿Qué música tiene esta playlist?"></textarea>
+            <div class="pb-dialog-actions">
+                <button type="button" id="playlistCancelDetails">Cancelar</button>
+                <button type="submit" value="save" class="pb-save">Guardar cambios</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- BLOQUE C: PRIVACIDAD, ENLACES Y COLABORADORES -->
+    <section class="sc-management" id="socialManagement" data-slug="@Model.Slug" hidden>
+        <div class="sc-management-header">
+            <h3>Compartir esta playlist</h3><span class="sc-tag" id="socialPrivacyLabel">Privada</span>
+        </div>
+        <p>Las listas son privadas por defecto. Solo se comparten cuando tú lo decidas.</p>
+        <div class="sc-actions">
+            <button type="button" id="socialTogglePublic" class="sc-button">Hacer pública</button>
+            <button type="button" id="socialCopy" class="sc-button">Copiar enlace</button>
+            <a href="/Social/MiEspacio" class="sc-button">Mi espacio</a>
+        </div>
+        <form id="socialInviteForm">
+            <label for="socialInviteEmail">Invitar colaborador</label>
+            <input id="socialInviteEmail" type="email" required maxlength="256" placeholder="correo@ejemplo.com" />
+            <button type="submit" class="sc-green">Invitar usuario</button>
+        </form>
+        <div id="socialMembers"></div>
+        <p id="socialFeedback" class="sc-feedback" role="status" aria-live="polite"></p>
+    </section>
+
+    <!-- CANCIONES REALES -->
+    <section class="p24-saved">
+
+        <h2>Canciones de tu biblioteca</h2>
+
+        <p class="p24-hint">
+            Pasa el cursor por una canción.
+            Utiliza el corazón o los tres puntos
+            para agregarla a otras playlists.
+        </p>
+
+        <div class="pb-tools">
+            <label class="pb-search-wrap">
+                <span aria-hidden="true">⌕</span>
+                <input id="playlistTrackSearch" type="search"
+                       placeholder="Buscar en esta playlist" autocomplete="off"
+                       aria-label="Buscar canciones en esta playlist" />
+            </label>
+            <label class="pb-order-wrap" for="playlistTrackSort">
+                <span>Ordenar:</span>
+                <select id="playlistTrackSort">
+                    <option value="manual">Orden personalizado</option>
+                    <option value="title-asc">Título (A–Z)</option>
+                    <option value="title-desc">Título (Z–A)</option>
+                    <option value="artist-asc">Artista (A–Z)</option>
+                    <option value="artist-desc">Artista (Z–A)</option>
+                    <option value="date-desc">Más recientes</option>
+                    <option value="date-asc">Más antiguas</option>
+                </select>
+            </label>
+        </div>
+        <p class="pb-order-hint" id="playlistOrderHint" hidden>
+            Arrastra las canciones o utiliza ↑ y ↓ para guardar tu orden personalizado.
+        </p>
+
+        <div class="pdetail-table-head">
+
+            <div>#</div>
+            <div>Título</div>
+            <div>Álbum</div>
+            <div>Fecha en que se agregó</div>
+            <div>Acciones</div>
+
+        </div>
+
+        <div id="playlistSavedTracks"></div>
+
+        <div id="playlistEmpty"
+             class="p24-empty"
+             hidden>
+            Todavía no tienes canciones guardadas aquí.
+            Puedes añadir MP3 o agregar canciones
+            desde otras playlists.
+        </div>
+
+    </section>
+
+    <!-- CANCIONES DE DEMOSTRACION -->
+    @if (Model.Tracks.Count > 0)
+    {
+        <section class="pdetail-table"
+                 id="playlistDemoSection">
+
+            <div class="p24-demo-label">
+                Canciones de referencia.
+                Para reproducirlas, necesitas añadir
+                archivos de audio a tu biblioteca.
+            </div>
+
+            <div class="pdetail-table-head">
+                <div>#</div>
+                <div>Título</div>
+                <div>Álbum</div>
+                <div>Fecha en que se agregó</div>
+                <div>◷</div>
+            </div>
+
+            <div class="pdetail-table-body">
+
+                @foreach (var track in Model.Tracks)
+                {
+                    <div class="pdetail-track-row">
+
+                        <div class="pdetail-track-number">
+                            @track.Number
+                        </div>
+
+                        <div class="pdetail-track-main">
+
+                            <img src="@Url.Content(track.Cover)"
+                                 alt="@track.Title" />
+
+                            <div class="pdetail-track-info">
+
+                                <span class="pdetail-track-title">
+                                    @track.Title
+                                </span>
+
+                                <span class="pdetail-track-artist">
+                                    @track.Artist
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="pdetail-track-album">
+                            @track.Album
+                        </div>
+
+                        <div class="pdetail-track-date">
+                            @track.AddedDate
+                        </div>
+
+                        <div class="pdetail-track-duration">
+                            @track.Duration
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        </section>
+    }
+
+    <!-- RECOMENDACIONES -->
+    @if (Model.Recommendations.Count > 0)
+    {
+        <section class="pdetail-recommendations">
+
+            <h2>Recomendaciones</h2>
+
+            <p>
+                Basadas en esta playlist de demostración
+            </p>
+
+            <div class="pdetail-rec-list">
+
+                @foreach (var item in Model.Recommendations)
+                {
+                    <div class="pdetail-rec-row">
+
+                        <div class="pdetail-rec-left">
+
+                            <img src="@Url.Content(item.Cover)"
+                                 alt="@item.Title" />
+
+                            <div>
+                                <strong>@item.Title</strong>
+                                <span>@item.Artist</span>
+                            </div>
+
+                        </div>
+
+                        <div class="pdetail-rec-album">
+                            @item.Album
+                        </div>
+
+                        <div class="pdetail-rec-duration">
+                            @item.Duration
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </section>
+    }
+
+    <!-- PIE DE PAGINA -->
+    <section class="pdetail-footer">
+
+        <div class="pdetail-footer-grid">
+
+            <div>
+                <h4>SpotifyNet</h4>
+                <a href="/">Inicio</a>
+                <a href="/">Mi biblioteca</a>
+            </div>
+
+            <div>
+                <h4>Tu música</h4>
+                <a href="/">Playlists</a>
+                <a href="/">Canciones</a>
+            </div>
+
+            <div>
+                <h4>Proyecto</h4>
+                <a href="/">ASP.NET Core MVC</a>
+                <a href="/">SQLite</a>
+            </div>
+
+            <div>
+                <h4>Cuenta</h4>
+                <span style="color:#aaa;font-size:12px;">
+                    Sesión protegida
+                </span>
+            </div>
+
+        </div>
+
+        <div class="pdetail-footer-bottom">
+            <span>SpotifyNet · Proyecto universitario</span>
+            <span>2026</span>
+        </div>
+
+    </section>
+
+</div>
+
+@section Scripts {
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const slug = @Html.Raw(
+        System.Text.Json.JsonSerializer.Serialize(Model.Slug)
+    );
+
+    const nombreInicial = @Html.Raw(
+        System.Text.Json.JsonSerializer.Serialize(Model.Name)
+    );
+
+    let portada = @Html.Raw(
+        System.Text.Json.JsonSerializer.Serialize(
+            Url.Content(Model.Cover))
+    );
+
+    const $ = id => document.getElementById(id);
+
+    // Al navegar internamente, se elimina el menú antiguo.
+    if (window.__spotifyPlaylistCleanup) {
+        window.__spotifyPlaylistCleanup();
+    }
+
+    const abortador = new AbortController();
+
+    const lista = $("playlistSavedTracks");
+    const vacio = $("playlistEmpty");
+    const estado = $("playlistStatus");
+
+    const token = document.querySelector(
+        '#playlistToken input[name="__RequestVerificationToken"]'
+    )?.value || "";
+
+    let canciones = [];
+    let esPersonal = false;
+    let puedeEditar = false;
+    let descripcionActual = "";
+    let nombreActual = nombreInicial;
+    let ordenActual = "manual";
+    let busquedaActual = "";
+    const comparar = new Intl.Collator("es", { sensitivity: "base", numeric: true });
+    let cancionMenu = null;
+
+    // ==========================================
+    // MENÚ CONTEXTUAL
+    // ==========================================
+
+    const menu = document.createElement("div");
+    menu.className = "p24-menu";
+    menu.hidden = true;
+
+    const submenu = document.createElement("div");
+    submenu.className = "p24-submenu";
+    submenu.hidden = true;
+
+    document.body.append(menu, submenu);
+
+    function limpiarMenu() {
+        menu.remove();
+        submenu.remove();
+        abortador.abort();
+    }
+
+    window.__spotifyPlaylistCleanup = limpiarMenu;
+
+    document.addEventListener(
+        "spotifynet:navegacion",
+        function () {
+            if (!document.getElementById("playlistPage")) {
+                limpiarMenu();
+            }
+        },
+        { signal: abortador.signal }
+    );
+
+    function cerrarMenus() {
+        menu.hidden = true;
+        submenu.hidden = true;
+        cancionMenu = null;
+    }
+
+    document.addEventListener(
+        "pointerdown",
+        function (evento) {
+            if (!menu.contains(evento.target) &&
+                !submenu.contains(evento.target) &&
+                !evento.target.closest(".p24-more")) {
+                cerrarMenus();
+            }
+        },
+        { signal: abortador.signal }
+    );
+
+    document.addEventListener(
+        "keydown",
+        function (evento) {
+            if (evento.key === "Escape") {
+                cerrarMenus();
+            }
+        },
+        { signal: abortador.signal }
+    );
+
+    function posicionarMenu(caja, referencia, ancho = 240) {
+        const margen = 10;
+
+        caja.style.width = ancho + "px";
+
+        caja.hidden = false;
+
+        const alto = caja.offsetHeight;
+
+        const izquierda = Math.max(
+            margen,
+            Math.min(
+                referencia.left,
+                window.innerWidth - ancho - margen
+            )
+        );
+
+        const arriba = Math.max(
+            margen,
+            Math.min(
+                referencia.bottom + 5,
+                window.innerHeight - alto - margen
+            )
+        );
+
+        caja.style.left = izquierda + "px";
+        caja.style.top = arriba + "px";
+    }
+
+    function separador() {
+        const div = document.createElement("div");
+        div.className = "p24-menu-divider";
+        return div;
+    }
+
+    function opcion(texto, icono, accion) {
+        const boton = document.createElement("button");
+
+        boton.type = "button";
+        boton.className = "p24-menu-btn";
+
+        const simbolo = document.createElement("span");
+        simbolo.className = "p24-menu-icon";
+        simbolo.textContent = icono;
+
+        const nombre = document.createElement("span");
+        nombre.textContent = texto;
+
+        boton.append(simbolo, nombre);
+
+        if (accion) {
+            boton.addEventListener("click", accion);
+        }
+
+        return boton;
+    }
+
+    function mensaje(texto, error = false) {
+        estado.textContent = texto;
+        estado.classList.toggle("p24-error", error);
+    }
+
+    async function peticionPost(url, campos) {
+        const formulario = new FormData();
+
+        Object.entries(campos).forEach(([clave, valor]) => {
+            formulario.append(clave, valor);
+        });
+
+        const respuesta = await fetch(url, {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "RequestVerificationToken": token
+            },
+            body: formulario
+        });
+
+        const datos = await respuesta.json().catch(
+            () => ({})
+        );
+
+        if (!respuesta.ok) {
+            throw new Error(
+                datos.error ||
+                "No se pudo completar la operación."
+            );
+        }
+
+        return datos;
+    }
+
+    function datosParaReproductor() {
+        return canciones.map(cancion => ({
+            id: cancion.id,
+            title: cancion.title,
+            artist: cancion.artist,
+            url: cancion.url,
+            cover: portada,
+            local: false
+        }));
+    }
+
+    function reproducir(indice) {
+        if (canciones.length === 0) {
+            mensaje("Primero añade una canción a la playlist.");
+            return;
+        }
+
+        const reproductor = window.SpotifyNetPlayer;
+
+        if (!reproductor) {
+            mensaje(
+                "El reproductor no está disponible.",
+                true
+            );
+            return;
+        }
+
+        reproductor.playTracks(
+            datosParaReproductor(),
+            indice
+        );
+
+        mensaje(
+            "Reproduciendo: " + canciones[indice].title
+        );
+    }
+
+    // ==========================================
+    // FAVORITOS
+    // ==========================================
+
+    async function cambiarFavorito(cancion) {
+        try {
+            if (cancion.isLiked) {
+                await peticionPost(
+                    "/Biblioteca/QuitarDeLista",
+                    {
+                        id: cancion.id,
+                        slug: "tus-me-gusta"
+                    }
+                );
+
+                mensaje("Canción quitada de Tus me gusta.");
+            } else {
+                await peticionPost(
+                    "/Biblioteca/AgregarALista",
+                    {
+                        id: cancion.id,
+                        slug: "tus-me-gusta"
+                    }
+                );
+
+                mensaje("Canción añadida a Tus me gusta.");
+            }
+
+            cerrarMenus();
+            await cargarCanciones(false);
+
+        } catch (error) {
+            mensaje(error.message, true);
+        }
+    }
+
+    async function agregarALista(cancion, destino) {
+        try {
+            const resultado = await peticionPost(
+                "/Biblioteca/AgregarALista",
+                {
+                    id: cancion.id,
+                    slug: destino
+                }
+            );
+
+            cerrarMenus();
+
+            mensaje(
+                resultado.message ||
+                "Canción añadida a la playlist."
+            );
+
+            if (destino === "tus-me-gusta") {
+                await cargarCanciones(false);
+            }
+
+        } catch (error) {
+            mensaje(error.message, true);
+        }
+    }
+
+    // ==========================================
+    // SUBMENÚ: AGREGAR A PLAYLIST
+    // ==========================================
+
+    const destinosReferencia = [
+        ["trap-bastardo", "Trap Bastardo"],
+        ["para-jugar-tryhard", "Para jugar Tryhard 😎"],
+        ["ia-trap", "I.A. Trap"],
+        ["gym", "GYM"],
+        ["cano", "CANO"],
+        ["fiesta", "Fiesta!!!"],
+        ["trippy-cano", "Trippy Cano"],
+        ["blood-oceans-how-many", "Blood Oceans (How Many?)"],
+        ["trap-cano", "Trap Cano"],
+        ["hits-de-internet", "Hits de Internet"],
+        ["musica-para-programar", "Música para programar"],
+        ["this-is-astrix", "This Is Astrix"],
+        ["kiss-me-kiss-me-kiss-me-again",
+         "KISS ME KISS ME KISS ME AGAIN"]
+    ];
+
+    async function mostrarSubmenu(cancion) {
+        if (!cancion) return;
+
+        submenu.replaceChildren();
+        submenu.hidden = false;
+
+        const titulo = document.createElement("div");
+        titulo.className = "p24-menu-heading";
+        titulo.textContent = "Agregar a playlist";
+
+        const buscador = document.createElement("input");
+        buscador.type = "search";
+        buscador.className = "p24-menu-search";
+        buscador.placeholder = "Busca una playlist";
+        buscador.autocomplete = "off";
+
+        const nueva = opcion(
+            "Nueva playlist",
+            "+",
+            async function () {
+                const nombre = prompt(
+                    "Nombre de tu nueva playlist:",
+                    "Mi nueva playlist"
+                );
+
+                if (nombre === null) return;
+
+                if (nombre.trim().length < 2) {
+                    mensaje(
+                        "Escribe un nombre de al menos 2 caracteres.",
+                        true
+                    );
+                    return;
+                }
+
+                try {
+                    const resultado = await peticionPost(
+                        "/Biblioteca/CrearLista",
+                        { nombre: nombre.trim() }
+                    );
+
+                    await peticionPost(
+                        "/Biblioteca/AgregarALista",
+                        {
+                            id: cancion.id,
+                            slug: resultado.slug
+                        }
+                    );
+
+                    await window.SpotifyNetLibraryRefresh?.();
+
+                    cerrarMenus();
+
+                    mensaje(
+                        "Playlist creada y canción agregada. " +
+                        "La música continúa sonando."
+                    );
+
+                } catch (error) {
+                    mensaje(error.message, true);
+                }
+            }
+        );
+
+        const listaDestinos = document.createElement("div");
+        listaDestinos.className = "p24-menu-list";
+
+        submenu.append(
+            titulo,
+            buscador,
+            nueva,
+            separador(),
+            listaDestinos
+        );
+
+        const base = destinosReferencia.map(item => ({
+            slug: item[0],
+            name: item[1]
+        }));
+
+        try {
+            const respuesta = await fetch(
+                "/Biblioteca/MisListas",
+                { credentials: "same-origin" }
+            );
+
+            if (respuesta.ok) {
+                const personales = await respuesta.json();
+
+                personales.forEach(item => {
+                    base.push({
+                        slug: item.slug,
+                        name: item.name
+                    });
+                });
+            }
+
+        } catch (error) {
+            console.error(
+                "No se pudieron cargar las playlists personales.",
+                error
+            );
+        }
+
+        const destinos = Array.from(
+            new Map(
+                base.map(item => [item.slug, item])
+            ).values()
+        );
+
+        function dibujarDestinos() {
+            const termino = buscador.value
+                .trim()
+                .toLocaleLowerCase();
+
+            listaDestinos.replaceChildren();
+
+            const visibles = destinos.filter(item =>
+                item.name.toLocaleLowerCase().includes(termino)
+            );
+
+            if (visibles.length === 0) {
+                const vacio = document.createElement("div");
+
+                vacio.className = "p24-menu-empty";
+                vacio.textContent =
+                    "No se encontraron playlists.";
+
+                listaDestinos.appendChild(vacio);
+                return;
+            }
+
+            visibles.forEach(item => {
+                const boton = opcion(
+                    item.name,
+                    "♫",
+                    function () {
+                        agregarALista(cancion, item.slug);
+                    }
+                );
+
+                if (item.slug === slug) {
+                    boton.classList.add("is-selected");
+                    boton.title =
+                        "Esta canción ya está en la playlist actual";
+                }
+
+                listaDestinos.appendChild(boton);
+            });
+        }
+
+        buscador.addEventListener(
+            "input",
+            dibujarDestinos
+        );
+
+        dibujarDestinos();
+
+        // Submenú junto al menú principal,
+        // preferentemente a su izquierda.
+        const rect = menu.getBoundingClientRect();
+
+        submenu.style.left = Math.max(
+            10,
+            rect.left - 255
+        ) + "px";
+
+        submenu.style.top = Math.max(
+            10,
+            Math.min(
+                rect.top,
+                window.innerHeight -
+                Math.min(submenu.offsetHeight, 520) - 10
+            )
+        ) + "px";
+    }
+
+    async function quitarCancion(cancion) {
+        if (!confirm(
+            "¿Quitar esta canción de la playlist?"
+        )) return;
+
+        try {
+            await peticionPost(
+                "/Biblioteca/EliminarCancion",
+                {
+                    id: cancion.id,
+                    slug: slug
+                }
+            );
+
+            window.SpotifyNetPlayer?.stop();
+
+            cerrarMenus();
+            await cargarCanciones(false);
+
+            mensaje("Canción quitada de esta playlist.");
+
+        } catch (error) {
+            mensaje(error.message, true);
+        }
+    }
+
+    function abrirMenu(cancion, boton) {
+        cerrarMenus();
+
+        cancionMenu = cancion;
+
+        menu.replaceChildren();
+
+        const agregar = opcion(
+            "Agregar a playlist",
+            "+",
+            function () {
+                mostrarSubmenu(cancion);
+            }
+        );
+
+        const flecha = document.createElement("span");
+        flecha.className = "p24-menu-arrow";
+        flecha.textContent = "›";
+        agregar.appendChild(flecha);
+
+        agregar.addEventListener(
+            "mouseenter",
+            function () {
+                if (submenu.hidden) {
+                    mostrarSubmenu(cancion);
+                }
+            }
+        );
+
+        const favorito = opcion(
+            cancion.isLiked
+                ? "Quitar de Tus me gusta"
+                : "Agregar a Tus me gusta",
+            cancion.isLiked ? "♥" : "♡",
+            function () {
+                cambiarFavorito(cancion);
+            }
+        );
+
+        const cola = opcion(
+            "Agregar a la fila de reproducción",
+            "☷",
+            function () {
+                const correcto =
+                    window.SpotifyNetPlayer?.queueTrack({
+                        title: cancion.title,
+                        artist: cancion.artist,
+                        url: cancion.url,
+                        cover: portada,
+                        local: false
+                    });
+
+                cerrarMenus();
+
+                mensaje(
+                    correcto
+                        ? "Canción añadida a la fila."
+                        : "No se pudo añadir a la fila.",
+                    !correcto
+                );
+            }
+        );
+
+        const siguiente = opcion(
+            "Reproducir a continuación",
+            "⏭",
+            function () {
+                const correcto = window.SpotifyNetPlayer?.playNextTrack({
+                    id: cancion.id,
+                    title: cancion.title,
+                    artist: cancion.artist,
+                    url: cancion.url,
+                    cover: portada,
+                    local: false
+                });
+                cerrarMenus();
+                mensaje(
+                    correcto ? "Canción colocada a continuación." : "No se pudo añadir la canción.",
+                    !correcto
+                );
+            }
+        );
+
+        const quitar = opcion(
+            "Quitar de esta playlist",
+            "×",
+            function () {
+                quitarCancion(cancion);
+            }
+        );
+
+        menu.append(
+            agregar,
+            favorito,
+            siguiente,
+            cola,
+            separador(),
+            quitar
+        );
+
+        const rect = boton.getBoundingClientRect();
+
+        posicionarMenu(menu, rect);
+    }
+
+    // ==========================================
+    // CONSTRUIR FILAS DE CANCIONES
+    // ==========================================
+
+    function crearFila(cancion, indice, numeroVisible = indice + 1) {
+        const fila = document.createElement("div");
+        fila.className = "pdetail-track-row";
+        fila.dataset.trackId = cancion.id;
+        const editableOrden = puedeEditar && ordenActual === "manual" && !busquedaActual;
+        fila.draggable = editableOrden;
+        fila.classList.toggle("pb-sortable", editableOrden);
+        if (editableOrden) {
+            fila.addEventListener("dragstart", e => {
+                e.dataTransfer.setData("text/plain", cancion.id);
+                e.dataTransfer.effectAllowed = "move";
+                fila.classList.add("pb-dragging");
+            });
+            fila.addEventListener("dragend", () => fila.classList.remove("pb-dragging"));
+            fila.addEventListener("dragover", e => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = "move";
+            });
+            fila.addEventListener("drop", async e => {
+                e.preventDefault();
+                const desde = e.dataTransfer.getData("text/plain");
+                if (!desde || desde === cancion.id) return;
+                const a = canciones.findIndex(x => x.id === desde);
+                const b = canciones.findIndex(x => x.id === cancion.id);
+                if (a < 0 || b < 0) return;
+                await moverCancion(a, b);
+            });
+        }
+
+        const numero = document.createElement("div");
+        numero.className = "pdetail-track-number";
+        numero.textContent = numeroVisible;
+
+        const principal = document.createElement("div");
+        principal.className = "pdetail-track-main";
+        principal.title = "Reproducir " + cancion.title;
+
+        const icono = document.createElement("span");
+        icono.className = "p24-icon";
+        icono.textContent = "♫";
+
+        const info = document.createElement("div");
+        info.className = "pdetail-track-info";
+
+        const titulo = document.createElement("span");
+        titulo.className = "pdetail-track-title";
+        titulo.textContent = cancion.title;
+
+        const artista = document.createElement("span");
+        artista.className = "pdetail-track-artist";
+        artista.textContent = cancion.artist;
+
+        info.append(titulo, artista);
+        principal.append(icono, info);
+
+        principal.addEventListener("click", function () {
+            reproducir(indice);
+        });
+
+        const album = document.createElement("div");
+        album.className = "pdetail-track-album";
+        album.textContent = cancion.album || "Sin álbum";
+
+        const fecha = document.createElement("div");
+        fecha.className = "pdetail-track-date";
+        fecha.textContent = cancion.addedDate;
+
+        const acciones = document.createElement("div");
+        acciones.className = "p24-actions-cell";
+
+        const corazon = document.createElement("button");
+        corazon.type = "button";
+        corazon.className = "p24-like";
+        corazon.textContent = cancion.isLiked ? "♥" : "♡";
+        corazon.title = cancion.isLiked
+            ? "Quitar de Tus me gusta"
+            : "Agregar a Tus me gusta";
+
+        if (cancion.isLiked) {
+            corazon.classList.add("is-liked");
+        }
+
+        corazon.addEventListener("click", function () {
+            cambiarFavorito(cancion);
+        });
+
+        const mas = document.createElement("button");
+        mas.type = "button";
+        mas.className = "p24-more";
+        mas.textContent = "···";
+        mas.title = "Más opciones";
+
+        mas.addEventListener("click", function () {
+            abrirMenu(cancion, mas);
+        });
+
+        if (editableOrden) {
+            const arriba = document.createElement("button");
+            arriba.type = "button";
+            arriba.className = "pb-move";
+            arriba.textContent = "↑";
+            arriba.title = "Mover hacia arriba";
+            arriba.disabled = indice === 0;
+            arriba.addEventListener("click", () => moverCancion(indice, indice - 1));
+            const abajo = document.createElement("button");
+            abajo.type = "button";
+            abajo.className = "pb-move";
+            abajo.textContent = "↓";
+            abajo.title = "Mover hacia abajo";
+            abajo.disabled = indice === canciones.length - 1;
+            abajo.addEventListener("click", () => moverCancion(indice, indice + 1));
+            acciones.append(arriba, abajo);
+        }
+        acciones.append(corazon, mas);
+
+        fila.append(
+            numero,
+            principal,
+            album,
+            fecha,
+            acciones
+        );
+
+        return fila;
+    }
+
+    function fechaOrdenable(fecha) {
+        const partes = (fecha || "").split("/");
+        return partes.length === 3
+            ? `${partes[2]}${partes[1]}${partes[0]}` : "";
+    }
+
+    function cancionesVisibles() {
+        const term = busquedaActual.toLocaleLowerCase("es");
+        const visibles = canciones.filter(c =>
+            `${c.title} ${c.artist} ${c.album || ""} ${nombreActual}`.toLocaleLowerCase("es").includes(term)
+        );
+        if (ordenActual !== "manual") {
+            visibles.sort((a,b) => {
+                if (ordenActual.startsWith("title"))
+                    return comparar.compare(a.title, b.title) * (ordenActual.endsWith("desc") ? -1 : 1);
+                if (ordenActual.startsWith("artist"))
+                    return comparar.compare(a.artist, b.artist) * (ordenActual.endsWith("desc") ? -1 : 1);
+                if (ordenActual === "date-asc")
+                    return fechaOrdenable(a.addedDate).localeCompare(fechaOrdenable(b.addedDate));
+                return fechaOrdenable(b.addedDate).localeCompare(fechaOrdenable(a.addedDate));
+            });
+        }
+        return visibles;
+    }
+
+    async function moverCancion(origen, destino) {
+        if (!puedeEditar || ordenActual !== "manual" || busquedaActual ||
+            destino < 0 || destino >= canciones.length || origen === destino) return;
+        const anteriores = [...canciones];
+        const [mover] = canciones.splice(origen, 1);
+        canciones.splice(destino, 0, mover);
+        dibujarCanciones();
+        try {
+            const respuesta = await fetch("/Biblioteca/GuardarOrden", {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json",
+                    "RequestVerificationToken": token
+                },
+                body: JSON.stringify({ slug, ids: canciones.map(c => c.id) })
+            });
+            const datos = await respuesta.json().catch(() => ({}));
+            if (!respuesta.ok) throw new Error(datos.error || "No se pudo guardar el orden.");
+            mensaje("Orden de la playlist guardado en SQLite.");
+        } catch (error) {
+            canciones = anteriores;
+            dibujarCanciones();
+            mensaje(error.message, true);
+        }
+    }
+
+    function dibujarCanciones() {
+        lista.replaceChildren();
+        const visibles = cancionesVisibles();
+        visibles.forEach((cancion, indice) => {
+            const indiceOriginal = canciones.findIndex(c => c.id === cancion.id);
+            lista.appendChild(crearFila(cancion, indiceOriginal, indice + 1));
+        });
+        vacio.hidden = visibles.length > 0;
+        vacio.textContent = busquedaActual
+            ? "No hay canciones que coincidan con esta búsqueda."
+            : "Todavía no tienes canciones guardadas aquí. Puedes añadir MP3 o agregar canciones desde otras playlists.";
+        $("playlistOrderHint").hidden = !(puedeEditar && ordenActual === "manual" && !busquedaActual);
+        const demo = $("playlistDemoSection");
+        if (demo) demo.hidden = canciones.length > 0 || slug === "tus-me-gusta" || !!busquedaActual;
+    }
+
+    function actualizarMiniaturas() {
+        document.querySelectorAll("[data-playlist-slug]").forEach(card => {
+            if (card.dataset.playlistSlug !== slug) return;
+            const miniatura = card.querySelector(".u-lib-art, .u-quick-cover, .u-album-art");
+            if (miniatura) {
+                miniatura.style.backgroundImage = `url("${portada}")`;
+                miniatura.style.backgroundSize = "cover";
+                miniatura.style.backgroundPosition = "center";
+            }
+        });
+    }
+
+    function actualizarVistaDetalles(datos) {
+        puedeEditar = !!datos.canEdit;
+        descripcionActual = datos.description || "";
+        if (datos.name) nombreActual = datos.name;
+        if (datos.coverUrl) {
+            // Cache-busting: se actualiza incluso si ya existía una portada en la sesión.
+            portada = datos.coverUrl + (datos.coverUrl.includes("?") ? "&" : "?") + "v=" + Date.now();
+            document.querySelectorAll("#playlistPage .pdetail-cover img, #playlistPage .pdetail-small-cover img")
+                .forEach(img => { img.src = portada; });
+            actualizarMiniaturas();
+        }
+        const titulo = document.querySelector("#playlistPage .pdetail-meta h1");
+        if (titulo) titulo.textContent = nombreActual;
+        const desc = document.querySelector("#playlistPage .pdetail-description");
+        if (desc) desc.textContent = descripcionActual || (esPersonal ? "Tu playlist personal." : "Lista de ejemplo de SpotifyNet.");
+        $("playlistEditDetails").hidden = !puedeEditar;
+        $("playlistChangeCover").hidden = !puedeEditar;
+        $("playlistRename").hidden = true;
+    }
+
+    async function cargarCanciones(mostrarEstado = true) {
+        try {
+            const respuesta = await fetch(
+                "/Biblioteca/Canciones?slug=" +
+                encodeURIComponent(slug),
+                {
+                    method: "GET",
+                    credentials: "same-origin"
+                }
+            );
+
+            if (!respuesta.ok) {
+                throw new Error(
+                    "No se pudo cargar la biblioteca."
+                );
+            }
+
+            const datos = await respuesta.json();
+
+            canciones = datos.tracks || [];
+            const contadorReal = document.getElementById("playlistRealCount");
+            if (contadorReal) contadorReal.textContent = "• " + canciones.length + " canciones guardadas";
+            esPersonal = !!datos.isCustom;
+            actualizarVistaDetalles(datos);
+            $("playlistDelete").hidden = !esPersonal;
+
+            if (slug === "tus-me-gusta") {
+                $("playlistAddAudio").hidden = true;
+            }
+
+            dibujarCanciones();
+
+            if (mostrarEstado) {
+                mensaje(
+                    canciones.length === 0
+                        ? "Esta playlist no tiene canciones guardadas."
+                        : canciones.length +
+                          " canción(es) guardada(s)."
+                );
+            }
+
+        } catch (error) {
+            mensaje(error.message, true);
+        }
+    }
+
+    // ==========================================
+    // AÑADIR ARCHIVOS MP3
+    // ==========================================
+
+    $("playlistAddAudio").addEventListener(
+        "click",
+        function () {
+            $("playlistAudioFiles").click();
+        }
+    );
+
+    $("playlistAudioFiles").addEventListener(
+        "change",
+        async function () {
+            const archivos = Array.from(this.files || []);
+
+            if (archivos.length === 0) return;
+
+            $("playlistAddAudio").disabled = true;
+
+            let guardadas = 0;
+            const errores = [];
+
+            for (const archivo of archivos) {
+                mensaje("Guardando " + archivo.name + "...");
+
+                try {
+                    await peticionPost(
+                        "/Biblioteca/Subir",
+                        {
+                            slug: slug,
+                            nombre: nombreActual,
+                            archivo: archivo
+                        }
+                    );
+
+                    guardadas++;
+
+                } catch (error) {
+                    errores.push(
+                        archivo.name + ": " + error.message
+                    );
+                }
+            }
+
+            this.value = "";
+            $("playlistAddAudio").disabled = false;
+
+            await cargarCanciones(false);
+
+            if (errores.length > 0) {
+                mensaje(
+                    "Guardadas: " + guardadas +
+                    ". Errores: " + errores.join(" | "),
+                    true
+                );
+            } else {
+                mensaje(
+                    guardadas +
+                    " canción(es) guardada(s) correctamente."
+                );
+            }
+        }
+    );
+
+    // ==========================================
+    // REPRODUCIR TODA LA PLAYLIST
+    // ==========================================
+
+    $("playlistPlayAll").addEventListener(
+        "click",
+        function () {
+            reproducir(0);
+        }
+    );
+
+    $("playlistRefresh").addEventListener(
+        "click",
+        function () {
+            cargarCanciones();
+        }
+    );
+
+    // ==========================================
+    // RENOMBRAR SIN RECARGAR LA PÁGINA
+    // ==========================================
+
+    $("playlistRename").addEventListener(
+        "click",
+        async function () {
+            if (!esPersonal) return;
+
+            const nuevoNombre = prompt(
+                "Nuevo nombre de la playlist:",
+                nombreActual
+            );
+
+            if (nuevoNombre === null) return;
+
+            if (nuevoNombre.trim().length < 2) {
+                mensaje("El nombre es demasiado corto.", true);
+                return;
+            }
+
+            try {
+                await peticionPost(
+                    "/Biblioteca/RenombrarLista",
+                    {
+                        slug: slug,
+                        nombre: nuevoNombre.trim()
+                    }
+                );
+
+                nombreActual = nuevoNombre.trim();
+
+                const titulo =
+                    document.querySelector(
+                        "#playlistPage .pdetail-meta h1"
+                    );
+
+                if (titulo) {
+                    titulo.textContent = nombreActual;
+                }
+
+                document.title =
+                    nombreActual + " - SpotifyNet";
+
+                await window.SpotifyNetLibraryRefresh?.();
+                await cargarCanciones(false);
+
+                mensaje(
+                    "Playlist renombrada sin detener la música."
+                );
+
+            } catch (error) {
+                mensaje(error.message, true);
+            }
+        }
+    );
+
+    // ==========================================
+    // ELIMINAR PLAYLIST PERSONAL
+    // ==========================================
+
+    $("playlistDelete").addEventListener(
+        "click",
+        async function () {
+            if (!esPersonal) return;
+
+            if (!confirm(
+                "¿Eliminar esta playlist? Las canciones " +
+                "compartidas con otras listas se conservarán."
+            )) return;
+
+            try {
+                const resultado = await peticionPost(
+                    "/Biblioteca/EliminarLista",
+                    { slug: slug }
+                );
+
+                await window.SpotifyNetLibraryRefresh?.();
+
+                cerrarMenus();
+
+                if (window.SpotifyNetNavigate) {
+                    await window.SpotifyNetNavigate(
+                        resultado.url || "/"
+                    );
+                } else {
+                    window.location.href =
+                        resultado.url || "/";
+                }
+
+            } catch (error) {
+                mensaje(error.message, true);
+            }
+        }
+    );
+
+
+    // BLOQUE B: filtros, edición de datos y subida de carátula
+    $("playlistTrackSearch")?.addEventListener("input", e => {
+        busquedaActual = e.target.value.trim();
+        dibujarCanciones();
+    });
+    $("playlistTrackSort")?.addEventListener("change", e => {
+        ordenActual = e.target.value;
+        dibujarCanciones();
+    });
+    $("playlistEditDetails")?.addEventListener("click", () => {
+        if (!puedeEditar) return;
+        $("playlistEditName").value = nombreActual;
+        $("playlistEditDescription").value = descripcionActual;
+        $("playlistEditDialog").showModal();
+    });
+    $("playlistCancelDetails")?.addEventListener("click", () => {
+        $("playlistEditDialog").close();
+    });
+    $("playlistEditForm")?.addEventListener("submit", async e => {
+        e.preventDefault();
+        const nombre = $("playlistEditName").value.trim();
+        const descripcion = $("playlistEditDescription").value.trim();
+        if (nombre.length < 2 || nombre.length > 100 || descripcion.length > 600) {
+            mensaje("Verifica los datos del formulario.", true); return;
+        }
+        try {
+            const datos = await peticionPost("/Biblioteca/EditarDetalles", { slug, nombre, descripcion });
+            nombreActual = datos.name;
+            descripcionActual = datos.description;
+            const titulo = document.querySelector("#playlistPage .pdetail-meta h1");
+            if (titulo) titulo.textContent = nombreActual;
+            const desc = document.querySelector("#playlistPage .pdetail-description");
+            if (desc) desc.textContent = descripcionActual;
+            document.title = nombreActual + " - SpotifyNet";
+            $("playlistEditDialog").close();
+            await window.SpotifyNetLibraryRefresh?.();
+            dibujarCanciones();
+            mensaje("Detalles de la playlist guardados.");
+        } catch (error) { mensaje(error.message, true); }
+    });
+    $("playlistChangeCover")?.addEventListener("click", () => {
+        if (puedeEditar) $("playlistCoverFile").click();
+    });
+    $("playlistCoverFile")?.addEventListener("change", async function() {
+        const archivo = this.files?.[0];
+        this.value = "";
+        if (!archivo) return;
+        if (!/^image\/(jpeg|png|webp)$/.test(archivo.type) || archivo.size > 5 * 1024 * 1024) {
+            mensaje("Selecciona JPG, PNG o WEBP de hasta 5 MB.", true); return;
+        }
+        try {
+            const datos = await peticionPost("/Biblioteca/SubirPortada", { slug, archivo });
+            portada = datos.coverUrl + (datos.coverUrl.includes("?") ? "&" : "?") + "v=" + Date.now();
+            document.querySelectorAll("#playlistPage .pdetail-cover img, #playlistPage .pdetail-small-cover img")
+                .forEach(img => { img.src = portada; });
+            actualizarMiniaturas();
+            await window.SpotifyNetLibraryRefresh?.();
+            mensaje("Portada guardada. Permanecerá después de volver a iniciar sesión.");
+        } catch (error) { mensaje(error.message, true); }
+    });
+    cargarCanciones();
+
+});
+</script>
+}

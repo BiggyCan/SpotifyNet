@@ -1,0 +1,28 @@
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewData["Title"] = "Editar mi perfil";
+}
+<section class="sc-page">
+    <div class="sc-top"><span class="sc-kicker">CUENTA</span><h1>Editar mi perfil</h1>
+        <p>Personaliza la información que otros usuarios registrados pueden ver.</p>
+        <a class="sc-button" href="/Social/MiEspacio">Volver a mi espacio</a>
+    </div>
+    @if (TempData["ProfileError"] is string error) { <p class="sc-error" role="alert">@error</p> }
+    @if (TempData["ProfileOk"] is string ok) { <p class="sc-ok" role="status">@ok</p> }
+    <div class="sc-profile-form">
+        <form method="post" asp-controller="Perfil" asp-action="Guardar">
+            @Html.AntiForgeryToken()
+            <label>Nombre visible <input name="nombre" maxlength="50" minlength="2" required value="@ViewBag.Name" /></label>
+            <label>Biografía <textarea name="biografia" maxlength="400" rows="4">@ViewBag.Bio</textarea></label>
+            <p class="sc-muted">Correo: @ViewBag.Email (no se publica).</p>
+            <button type="submit" class="sc-green">Guardar perfil</button>
+        </form>
+        <form method="post" enctype="multipart/form-data" asp-controller="Perfil" asp-action="SubirFoto">
+            @Html.AntiForgeryToken()
+            <label>Foto de perfil (máximo 3 MB, JPG/PNG/WEBP)
+                <input name="archivo" type="file" accept="image/png,image/jpeg,image/webp" required />
+            </label>
+            <button type="submit" class="sc-button">Cambiar foto</button>
+        </form>
+    </div>
+</section>

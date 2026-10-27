@@ -1,0 +1,547 @@
+
+/* SPOTIFYNET - DETALLE DE PLAYLIST */
+
+.pdetail-page {
+    min-height: 100%;
+    background: #121212;
+    color: #ffffff;
+}
+
+/* CABECERA */
+
+.pdetail-hero {
+    --hero-color: #97064e;
+
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+
+    min-height: 266px;
+    padding: 32px 22px 20px;
+
+    background: linear-gradient(
+        180deg,
+        var(--hero-color) 0%,
+        var(--hero-color) 75%,
+        #650535 100%
+    );
+}
+
+.pdetail-cover {
+    width: 194px;
+    height: 194px;
+    min-width: 194px;
+
+    overflow: hidden;
+    border-radius: 5px;
+    background: #282828;
+
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .35);
+}
+
+.pdetail-cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pdetail-meta {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 9px;
+
+    min-width: 0;
+    flex: 1;
+}
+
+.pdetail-type {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.pdetail-meta h1 {
+    margin: 0;
+
+    font-size: clamp(24px, 2vw, 36px);
+    line-height: 1.05;
+
+    font-weight: 900;
+    letter-spacing: -1px;
+
+    overflow-wrap: normal;
+}
+
+.pdetail-ownerline {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+
+    font-size: 12px;
+    color: #e7e7e7;
+}
+
+.pdetail-ownerline strong {
+    color: white;
+}
+
+.pdetail-avatar {
+    width: 21px;
+    height: 21px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+    background: #1ed760;
+    color: black;
+
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.pdetail-description {
+    margin: 3px 0 0;
+    color: #ddd;
+    font-size: 12px;
+}
+
+/* CONTROLES DE PLAYLIST */
+
+.pdetail-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+
+    min-height: 87px;
+    padding: 16px 22px;
+
+    display: flex;
+    align-items: center;
+    gap: 17px;
+
+    background: linear-gradient(
+        180deg,
+        #410b28,
+        #230d19
+    );
+}
+
+.pdetail-play-btn {
+    width: 47px;
+    height: 47px;
+    flex-shrink: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #1ed760;
+    color: black;
+
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.pdetail-play-btn:hover {
+    transform: scale(1.05);
+}
+
+.pdetail-small-cover {
+    width: 31px;
+    height: 36px;
+    padding: 0;
+
+    overflow: hidden;
+    border: 0;
+    border-radius: 5px;
+
+    background: transparent;
+    cursor: pointer;
+}
+
+.pdetail-small-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pdetail-tool-btn {
+    padding: 5px;
+
+    border: none;
+    background: transparent;
+
+    color: #b3b3b3;
+    font-size: 23px;
+    cursor: pointer;
+}
+
+.pdetail-tool-btn:hover {
+    color: white;
+}
+
+.pdetail-view-mode {
+    margin-left: auto;
+    color: #b3b3b3;
+    font-size: 12px;
+}
+
+/* TABLA DE CANCIONES */
+
+.pdetail-table {
+    padding: 0 22px 22px;
+    background: linear-gradient(
+        #210d18,
+        #121212 170px
+    );
+}
+
+.pdetail-table-head,
+.pdetail-track-row {
+    display: grid;
+
+    grid-template-columns:
+        24px
+        minmax(180px, 1.7fr)
+        minmax(120px, 1fr)
+        minmax(125px, .85fr)
+        43px;
+
+    gap: 10px;
+    align-items: center;
+}
+
+.pdetail-table-head {
+    position: sticky;
+    top: 87px;
+    z-index: 15;
+
+    padding: 9px 10px 12px;
+
+    border-bottom: 1px solid #ffffff22;
+
+    background: #1c1118;
+    color: #a7a7a7;
+
+    font-size: 12px;
+}
+
+.pdetail-track-row {
+    min-height: 48px;
+    padding: 5px 10px;
+
+    border-radius: 4px;
+    color: #a7a7a7;
+
+    transition: background .15s;
+}
+
+.pdetail-track-row:hover {
+    background: #ffffff18;
+}
+
+.pdetail-track-row.active .pdetail-track-title {
+    color: #1ed760;
+}
+
+.pdetail-track-number {
+    text-align: center;
+    font-size: 13px;
+}
+
+.pdetail-track-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.pdetail-track-main img {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+    border-radius: 3px;
+
+    object-fit: cover;
+}
+
+.pdetail-track-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.pdetail-track-title {
+    color: white;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pdetail-track-artist {
+    font-size: 11px;
+    color: #aaa;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pdetail-track-album,
+.pdetail-track-date,
+.pdetail-track-duration {
+    font-size: 11px;
+    color: #aaa;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.pdetail-track-duration {
+    text-align: right;
+}
+
+/* RECOMENDACIONES */
+
+.pdetail-recommendations {
+    padding: 35px 22px 45px;
+    background: #121212;
+}
+
+.pdetail-recommendations h2 {
+    margin: 0 0 7px;
+    font-size: 21px;
+    font-weight: 750;
+}
+
+.pdetail-recommendations > p {
+    margin: 0 0 20px;
+    font-size: 12px;
+    color: #aaa;
+}
+
+.pdetail-rec-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.pdetail-rec-row {
+    display: grid;
+
+    grid-template-columns:
+        minmax(190px, 1.5fr)
+        minmax(120px, 1fr)
+        50px;
+
+    gap: 14px;
+    align-items: center;
+
+    padding: 6px 10px;
+    border-radius: 4px;
+}
+
+.pdetail-rec-row:hover {
+    background: #252525;
+}
+
+.pdetail-rec-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.pdetail-rec-left img {
+    width: 38px;
+    height: 38px;
+    object-fit: cover;
+    border-radius: 3px;
+}
+
+.pdetail-rec-left div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.pdetail-rec-left strong {
+    color: white;
+    font-size: 12px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pdetail-rec-left span,
+.pdetail-rec-album,
+.pdetail-rec-duration {
+    color: #aaa;
+    font-size: 11px;
+}
+
+.pdetail-rec-album {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pdetail-rec-duration {
+    text-align: right;
+}
+
+/* PIE DE PÁGINA */
+
+.pdetail-footer {
+    padding: 38px 22px 20px;
+    background: #121212;
+}
+
+.pdetail-footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    padding-bottom: 30px;
+}
+
+.pdetail-footer-grid h4 {
+    margin: 0 0 14px;
+    font-size: 13px;
+}
+
+.pdetail-footer-grid a {
+    display: block;
+    margin-bottom: 11px;
+
+    font-size: 12px;
+    color: #aaa;
+
+    text-decoration: none;
+}
+
+.pdetail-footer-grid a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.pdetail-footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    padding-top: 24px;
+
+    border-top: 1px solid #ffffff20;
+    color: #999;
+
+    font-size: 11px;
+}
+
+.pdetail-footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 13px;
+}
+
+.pdetail-footer-links a {
+    color: #999;
+    text-decoration: none;
+}
+
+/* DISEÑO ADAPTABLE */
+
+@media (max-width: 1200px) {
+
+    .pdetail-table-head,
+    .pdetail-track-row {
+        grid-template-columns:
+            24px
+            minmax(180px, 1.7fr)
+            minmax(110px, 1fr)
+            43px;
+    }
+
+    .pdetail-table-head > div:nth-child(4),
+    .pdetail-track-date {
+        display: none;
+    }
+
+    .pdetail-rec-row {
+        grid-template-columns:
+            minmax(190px, 1fr)
+            50px;
+    }
+
+    .pdetail-rec-album {
+        display: none;
+    }
+}
+
+@media (max-width: 900px) {
+
+    .pdetail-hero {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .pdetail-cover {
+        width: 180px;
+        height: 180px;
+        min-width: 180px;
+    }
+
+    .pdetail-meta h1 {
+        font-size: 30px;
+    }
+
+    .pdetail-footer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+
+    .pdetail-hero,
+    .pdetail-toolbar,
+    .pdetail-table,
+    .pdetail-recommendations,
+    .pdetail-footer {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .pdetail-meta h1 {
+        font-size: 26px;
+    }
+
+    .pdetail-table-head,
+    .pdetail-track-row {
+        grid-template-columns:
+            22px
+            minmax(140px, 1fr)
+            38px;
+    }
+
+    .pdetail-table-head > div:nth-child(3),
+    .pdetail-track-album {
+        display: none;
+    }
+
+    .pdetail-footer-grid {
+        grid-template-columns: 1fr;
+    }
+}

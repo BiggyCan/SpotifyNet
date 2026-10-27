@@ -1,0 +1,42 @@
+@{
+    Layout = "_UserLayout";
+    ViewData["Title"] = "Tus me gusta";
+}
+
+<section class="sn-g-page" id="snGFavorites" aria-label="Tus canciones favoritas">
+    <div class="sn-g-hero">
+        <div class="sn-g-hero-icon" aria-hidden="true">♥</div>
+        <div class="sn-g-hero-content">
+            <span class="sn-g-overline">Playlist · Guardada en tu cuenta</span>
+            <h1>Tus me gusta</h1>
+            <p>Las canciones que marcaste con el corazón, siempre en tu biblioteca.</p>
+            <strong id="snGCount">Cargando tus canciones…</strong>
+        </div>
+    </div>
+
+    <div class="sn-g-toolbar">
+        <button type="button" id="snGPlayAll" class="sn-g-main-play" disabled title="Reproducir tus favoritas">▶</button>
+        <span class="sn-g-toolbar-note">Tu música favorita</span>
+        <a class="sn-g-catalog" href="/Catalogo">♫ Explorar mi música</a>
+    </div>
+
+    <div class="sn-g-body">
+        <div class="sn-g-options">
+            <label class="sn-g-search-field">
+                <span aria-hidden="true">⌕</span>
+                <input id="snGSearch" type="search" placeholder="Buscar en Tus me gusta" aria-label="Buscar en Tus me gusta" autocomplete="off" />
+            </label>
+            <label class="sn-g-sort-label">Ordenar:
+                <select id="snGSort" aria-label="Ordenar canciones favoritas">
+                    <option value="recent">Añadidas recientemente</option>
+                    <option value="old">Más antiguas</option>
+                    <option value="title">Título (A–Z)</option>
+                    <option value="artist">Artista (A–Z)</option>
+                </select>
+            </label>
+        </div>
+        <div class="sn-g-headrow" aria-hidden="true"><span>#</span><span>Título</span><span>Álbum</span><span>Fecha</span><span>Acciones</span></div>
+        <div id="snGTracks" class="sn-g-tracks" aria-live="polite"><p class="sn-g-message">Cargando música guardada…</p></div>
+        <div id="snGFeedback" class="sn-g-feedback" role="status" aria-live="polite"></div>
+    </div>
+</section>

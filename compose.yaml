@@ -1,0 +1,24 @@
+name: spotifynet
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5267:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ConnectionStrings__DefaultConnection: "Data Source=/app/data/spotifynet.db"
+      ApplyMigrationsOnStartup: "true"
+    volumes:
+      - spotifynet_sqlite:/app/data
+      - spotifynet_audio:/app/App_Data/audio
+      - spotifynet_covers:/app/App_Data/covers
+    restart: unless-stopped
+
+volumes:
+  spotifynet_sqlite:
+  spotifynet_audio:
+  spotifynet_covers:
